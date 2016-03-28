@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://liu1084.github.io/blog/2016/03/28/angular-slash-how-to-write-service-and-inheritance/</loc>
+<lastmod>2016-03-28T19:58:12+08:00</lastmod>
+</url>
+<url>
 <loc>http://liu1084.github.io/blog/2016/03/25/github-slash-how-to-make-a-blog-with-jelly-on-github-dot-com-under-window-7/</loc>
 <lastmod>2016-03-25T00:00:00+08:00</lastmod>
 </url>
@@ -9,5 +13,20 @@
 </url>
 <url>
 <loc>http://liu1084.github.io/</loc>
+</url>
+<url>
+<loc>http://liu1084.github.io/blog/categories/angular/</loc>
+</url>
+<url>
+<loc>http://liu1084.github.io/blog/categories/inheritance/</loc>
+</url>
+<url>
+<loc>http://liu1084.github.io/blog/categories/service/</loc>
+</url>
+<url>
+<loc>http://liu1084.github.io/blog/categories/provider/</loc>
+</url>
+<url>
+<loc>http://liu1084.github.io/blog/categories/factory/</loc>
 </url>
 </urlset>
