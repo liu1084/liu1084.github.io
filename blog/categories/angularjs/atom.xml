@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Jim's Blog]]></title>
-  <link href="http://liu1084.github.io/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Angularjs | Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/blog/categories/angularjs/atom.xml" rel="self"/>
   <link href="http://liu1084.github.io/"/>
   <updated>2016-03-30T10:07:49+08:00</updated>
   <id>http://liu1084.github.io/</id>
@@ -322,141 +322,6 @@ app.controller('MainController',
         };
     });    
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Github Slash How to Make a Blog With Jelly on Github Dot Com Under Window 7]]></title>
-    <link href="http://liu1084.github.io/blog/2016/03/25/github-slash-how-to-make-a-blog-with-jelly-on-github-dot-com-under-window-7/"/>
-    <updated>2016-03-25T00:00:00+08:00</updated>
-    <id>http://liu1084.github.io/blog/2016/03/25/github-slash-how-to-make-a-blog-with-jelly-on-github-dot-com-under-window-7</id>
-    <content type="html"><![CDATA[<hr />
-
-<p>layout: post
-title: &ldquo;github/how to make a blog with octopress on github.com&rdquo;
-date: 2016-03-25 12:56:05 +0800
-comments: true</p>
-
-<h2>categories: [octopress, blog, github.com, github pages]</h2>
-
-<h2>There are 10 steps todo:</h2>
-
-<ul>
-<li><strong>Step 1: Install ruby, git and nodejs</strong></li>
-</ul>
-
-
-<h6>download</h6>
-
-<ol>
-<li>ruby</li>
-<li>git</li>
-<li>nodejs</li>
-</ol>
-
-
-<p>Install them step-by-step.</p>
-
-<ul>
-<li><strong>Step 2: Install ruby DEVELOPMENT KIT</strong></li>
-</ul>
-
-
-<h6>download &amp; install dev-kit of ruby</h6>
-
-<ol>
-<li>goto <a href="http://rubyinstaller.org/downloads/" title="ruby websit">http://rubyinstaller.org/downloads/</a> download</li>
-<li><p>install it.</p></li>
-<li><p><strong>Step 3: Clone octopress to local</strong></p></li>
-</ol>
-
-
-<h6>open cmd console, and press:</h6>
-
-<pre><code>git clone git://github.com/imathis/octopress.git octopress
-cd octopress
-</code></pre>
-
-<ul>
-<li><strong>Step 4: Install packages using gem</strong></li>
-</ul>
-
-
-<h6>install dependiencis, switch to development kit bin forlder, and open a console by run <code>msys.bat</code>, press(if u open console using system <code>cmd</code>, errors will be shown like this: &ldquo;Unknown tag &lsquo;include_array&rsquo; in index.html&rdquo;):</h6>
-
-<pre><code>gem install bundler
-bundle install
-rake install
-</code></pre>
-
-<ul>
-<li><strong>Step 5: Writing a post with markdown</strong></li>
-</ul>
-
-
-<h6>open forlder in your IDE(such as Sublime text 3 or Eclipse) &amp; under console press</h6>
-
-<pre><code>rake new_post['forlder/post-title']
-</code></pre>
-
-<p>this command will create a file which name is <code>YYYY-MM-DD-post-title.markdown</code> under <code>source/_posts</code> forder.</p>
-
-<p>you can edit this <code>markdown</code> file and save it.</p>
-
-<ul>
-<li><strong>Step 6: Preview pages on localhost</strong></li>
-</ul>
-
-
-<h6>generate static html from markdown</h6>
-
-<pre><code>rake generate
-rake preview
-</code></pre>
-
-<h6>if you want to edit sass file, you cant run</h6>
-
-<pre><code>rake watch
-</code></pre>
-
-<p>to watch file changes and compile <code>scss</code> to <code>css</code> real-time.</p>
-
-<ul>
-<li><strong>Step 7: Add CNAME to your DNS resolve</strong></li>
-</ul>
-
-
-<h6>if you have a domain(For example: page.domainname.com), and want to resolve your github page to it. you can add a CNAME to your DNS resolve recored &amp; add CNAME file to source forlder like this:</h6>
-
-<pre><code>echo "page.domainname.com" &gt;&gt; source/CNAME
-</code></pre>
-
-<ul>
-<li><strong>Step 8: Add a new repository on github.com</strong></li>
-</ul>
-
-
-<p>Because github only support jelly plugins and custom plugin like <code>include_array</code> (under plugins) not be supported, so I decide push static file to repository, other than source code.</p>
-
-<p>goto <a href="http://github.com">github.com</a>, and create a new repository, named <code>your github's username</code>, and switch to local public forlder, and push all file to the repository.</p>
-
-<h6>open a console, and press:</h6>
-
-<pre><code>git init
-git remote add origin git@xxx.github.git
-git add .
-git commit -m init"
-</code></pre>
-
-<ul>
-<li><p><strong>Step 9: Push pages to github.com</strong></p>
-
-<p>  git push -u origin master</p></li>
-<li><p><strong>Step 10: Enjoy it.</strong></p></li>
-</ul>
-
-
-<p>open your favriate browser and open <code>page.domainname.com</code>.</p>
 ]]></content>
   </entry>
   
