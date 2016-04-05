@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Test, | Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/blog/categories/test/atom.xml" rel="self"/>
+  <link href="http://liu1084.github.io/"/>
+  <updated>2016-04-05T12:42:48+08:00</updated>
+  <id>http://liu1084.github.io/</id>
+  <author>
+    <name><![CDATA[Jim liu]]></name>
+    <email><![CDATA[liu1084@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Test/karma]]></title>
+    <link href="http://liu1084.github.io/blog/2016/04/05/test-slash-karma/"/>
+    <updated>2016-04-05T00:12:36+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/04/05/test-slash-karma</id>
+    <content type="html"><![CDATA[<h1>Karma &amp; jasmine &amp; istanbul</h1>
+
+<h3>Karma - 是node平台的自动化测试管理工具（Test Runner）</h3>
+
+<h4>特点</h4>
+
+<ul>
+<li>该工具可用于测试所有主流web浏览器</li>
+<li>可以集成到CI（持续集成）工具</li>
+<li>可以和其他代码编辑器一起使用</li>
+<li>可以监控文件的变化，一旦监控中的文件发生改变，自动完成测试</li>
+</ul>
+
+
+<h4>使用</h4>
+
+<ul>
+<li><p>安装angular &amp; angular-mocks</p>
+
+<p>  npm install angular angular-mocks &ndash;save-dev</p></li>
+<li><p>安装karma &amp; jasmine &amp; jasmine-cli &amp; karma-jasmine &amp; jasmine-core</p>
+
+<p>  npm install karma &ndash;save-dev
+  npm install jasmine &ndash;save-dev
+  npm install -g karma-cli
+  npm install karma-jasmine &ndash;save-dev
+  npm install jasmine-core &ndash;save -dev</p></li>
+<li><p>初始化karma，生产karma.conf.js</p>
+
+<p>  karma init &ndash;> next &ndash;> next &hellip;</p></li>
+<li><p>修改karma.conf.js</p></li>
+</ul>
+
+
+<p>添加plugins到karma.conf.js中</p>
+
+<pre><code>// list of karma plugins
+plugins: [
+    'karma-jasmine',
+    'karma-chrome-launcher'
+],
+</code></pre>
+
+<p>指定进行测试的文件</p>
+
+<pre><code>// list of files / patterns to load in the browser
+files: [
+        'node_modules/angular/angular.js',
+        'node_modules/angular-resource/angular-resource.js',
+        'node_modules/angular-mocks/angular-mocks.js',
+        'src/main.js',
+        'src/q/Person.js',
+        'test/**/*.js'
+],
+</code></pre>
+
+<p>数组里面保护的文件，实际上就相当于html里面要包含哪些js（以及其依赖）一样，把需要测试的文件引入以后，测试文件依赖的文件（Person.js, main.js, angular*.js等都需要保护在其之前）</p>
+
+<p>main.js &ndash; 定义全局的模块名称</p>
+
+<p>Person.js &ndash; 一个工厂类</p>
+
+<pre><code>ScrumModule.factory('User', ['$log', function($log, name){
+    var Person = function(name){
+        this.eat = function(food){
+            $log.info(name + ' is eating delicious ' + food);
+        };
+        this.beHungry = function(reason){
+            $log.info(name + ' is hungry, because ' + reason);
+        };
+    };
+    return Person;
+}]);
+</code></pre>
+
+<p>PersonTest.js &ndash; 用于测试工厂类的单元测试文件</p>
+
+<pre><code>it('should illustrate basic usage of $q', function () {
+
+    var scope, q, http, resource, user, UserFactory;
+    beforeEach(angular.mock.module('Scrum'));
+    beforeEach(angular.mock.inject(function ($rootScope, $http, $resource, $q, User) {
+        scope = $rootScope.$new();
+    }));
+
+
+    var pizzaOrderFulfillment = $q.defer();
+    var pizzaDelivered = pizzaOrderFulfillment.promise;
+
+    user = new UserFactory('Pawel');
+    pizzaDelivered.then(user.eat, user.beHungry);
+    pizzaOrderFulfillment.resolve('101');
+    scope.$digest();
+
+    it('pawel will eat pizza', function () {
+        except($log.info.logs).toContain(['Pawel is eating delicious 101']);
+    });
+});
+</code></pre>
+
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8jasmine%E7%BC%96%E5%86%99%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81">使用jasmine编写测试代码</a></li>
+<li><p>启动karma对测试代码进行测试</p>
+
+<p>  karma start karma.conf.js</p></li>
+</ul>
+
+
+<h3>jasmine - 是node平台单元测试框架（类似JUnit）</h3>
+
+<h4>特点</h4>
+
+<ul>
+<li>行为测试（BDD）</li>
+<li>编写JavaScript测试的框架</li>
+<li>不依赖于任何其他库</li>
+</ul>
+
+
+<h4>代码结构</h4>
+
+<pre><code>describe("A suite", function() {
+  var foo;
+  beforeEach(function() {
+    foo = 0;
+    foo += 1;
+  });
+
+  afterEach(function() {
+    foo = 0;
+  });
+
+  it("contains spec with an expectation", function() {
+    expect(true).toBe(true);
+  });
+});
+</code></pre>
+
+<p>每个测试都在一个测试集中运行，Suite就是一个测试集，用describe函数封装。 Spec表示每个测试用例，用it函数封装。通过expect函数，作为程序断言来判断相等关系。setup过程用beforeEach函数封装，tearDown过程用afterEach封装。</p>
+
+<h4>使用jasmine编写测试代码<a name="使用jasmine编写测试代码"></a></h4>
+
+<h3>istanbul - 是一个单元测试代码覆盖率检查工具，可以很直观地告诉我们，单元测试对代码的控制程度。</h3>
+
+<h4>使用</h4>
+
+<ul>
+<li><p>安装karma-coverage</p>
+
+<p>  npm install karma-coverage &ndash;save-dev</p></li>
+<li><p>修改karma.conf.js</p>
+
+<p>  reporters: [&lsquo;progress&rsquo;,&lsquo;coverage&rsquo;],
+  preprocessors : {&lsquo;src.js&rsquo;: &lsquo;coverage&rsquo;},
+  coverageReporter: {
+      type : &lsquo;html&rsquo;,
+      dir : &lsquo;coverage/&rsquo;
+  }</p></li>
+<li><p>查看测试覆盖率报告</p></li>
+</ul>
+
+
+<p>在文件夹coverage下，有index.html文件，打开即可。</p>
+]]></content>
+  </entry>
+  
+</feed>
