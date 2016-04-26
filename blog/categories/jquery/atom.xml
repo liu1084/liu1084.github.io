@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Jquery | Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/blog/categories/jquery/atom.xml" rel="self"/>
+  <link href="http://liu1084.github.io/"/>
+  <updated>2016-04-26T13:19:00+08:00</updated>
+  <id>http://liu1084.github.io/</id>
+  <author>
+    <name><![CDATA[Jim liu]]></name>
+    <email><![CDATA[liu1084@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[What&#8217;s the Diff Between jQuery&#8217;s Ready and Window Onload?]]></title>
+    <link href="http://liu1084.github.io/?p=145"/>
+    <updated>2016-01-05T08:26:31+08:00</updated>
+    <id>http://liu1084.github.io/whats-the-diff-between-jquerys-ready-and-window-onload</id>
+    <content type="html"><![CDATA[<ul>
+<li>onload 是window自己实现的事件，而ready是jQuery自己实现的</li>
+<li>onload的触发是在页面全部加载完成（包括：image、css），而jQuery是dom加载完成之后，所以onload发生在ready之后</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[About Extend of jQuery]]></title>
+    <link href="http://liu1084.github.io/blog/2016/01/05/about-extend-of-jQuery/"/>
+    <updated>2016-01-05T08:24:04+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/01/05/about-extend-of-jQuery</id>
+    <content type="html"><![CDATA[<h1>About extend of jQuery</h1>
+
+<p>综述</p>
+
+<p>extend方法在jQuery中是一个很重要的方法，jQuey内部用它来扩展属性方法。常用语jQuery插件开发。</p>
+
+<p>jQuery提供了两个方法，$.extend和$.fn.extend,两个方法内部实现一样，但功能用法却不一样，按照官方解释：</p>
+
+<p>jQuery.extend(): Merge the contents of two or more objects together into the first object.(把两个或者更多的对象合并到第一个当中)</p>
+
+<p>jQuery.fn.extend():Merge the contents of an object onto the jQuery prototype to provide new jQuery instance methods.(把对象挂载到jQuery的prototype属性，来扩展一个新的jQuery实例方法)</p>
+
+<p>简单来说：$.extend(),是用来扩展jQuery静态方法；$.fn.extend()是用来扩展jQuery实例方法。</p>
+
+<p>例如：</p>
+
+<p>//扩展静态方法：</p>
+
+<pre><code>$.extend({
+    sayName:function (){
+        console.log(&amp;#8220;My name is jQuery&amp;#8221;);
+    }
+});
+
+$.sayName(); //&amp;#8221;My name is jQuery&amp;#8221;
+</code></pre>
+
+<p>//扩展实例方法：</p>
+
+<p>$.fn.extend({</p>
+
+<p>check: function() {</p>
+
+<p>return this.each(function() {</p>
+
+<p>this.checked = true;</p>
+
+<p>});</p>
+
+<p>}</p>
+
+<p>});</p>
+
+<p>$( &#8220;input[type=&#8217;checkbox&#8217;]&#8221; ).check(); //所有的checkbox都会被选择</p>
+
+<p>Note:扩展的静态方法，直接使用$调用；扩展的实例方法，要用$()调用。</p>
+
+<p>具体用法</p>
+
+<p>参数为多个</p>
+
+<p>extend(dest,src1,src2&#8230;srcN);//可以传入N多个对象</p>
+
+<p>参数的含义：将src1,src2…srcN的每一项合并为dest的每一项，并返回合并后的对象：</p>
+
+<p>var dest = {name:&#8221;job&#8221;,age:20},src1 = {name:&#8221;tom&#8221;,live:&#8221;Beijing&#8221;};</p>
+
+<p>$.extend(dest,src1);</p>
+
+<p>console.log(dest); //{name: &#8220;tom&#8221;, age: 20,live:&#8221;Beijing&#8221;}</p>
+
+<p>Note: dest的结构会发生变化。如果想得到合并的结果，并不修改dest的结构，可以这么做</p>
+
+<p>var dest = {name:&#8221;job&#8221;,age:20},src1 = {name:&#8221;tom&#8221;,live:&#8221;Beijing&#8221;};</p>
+
+<p>var newSrc = $.extend({}, dest, src1);</p>
+
+<p>console.log(dest); //newSrc就是得到的新对象</p>
+
+<p>这样的做法在写插件，设置默认值时会用到</p>
+
+<p>(function ($){</p>
+
+<p>$.fn.extend({</p>
+
+<p>dralog:function (options){</p>
+
+<p>//设置默认样式</p>
+
+<p>var deafualt = {</p>
+
+<p>width:100,</p>
+
+<p>height:100</p>
+
+<p>};</p>
+
+<p>//传过来的参数覆盖默认值</p>
+
+<p>var style = $.extend({},deafualt,options);</p>
+
+<p>$(&#8220;div&#8221;).css(style);</p>
+
+<p>}</p>
+
+<p>});</p>
+
+<p>})(jQuery);</p>
+
+<p>$().dralog({</p>
+
+<p>width: 200,</p>
+
+<p>height: 200</p>
+
+<p>});</p>
+
+<p>console.log(style); //deafualt变为：{width: 200, height: 200}</p>
+
+<p>参数为一个</p>
+
+<p>$.extend(dest)//将dest的每一项合并到jQuery全局对象中//例如$.extend({name:&#8221;tom&#8221;});$.extend({name:&#8221;tom&#8221;});</p>
+
+<p>使用：</p>
+
+<p>$.name$.fn.extend(dest) //将dest的每一项合并到jQuery的实例中//例如$.fn.extend({name:&#8221;tom&#8221;});</p>
+
+<p>使用：</p>
+
+<p>$().name$.extend({nameScope:{}}); //创建一个命名空间$.extend($.nameScope,{name:&#8221;tom&#8221;}); //将name添加到nameScope这个命名空间中使用：$.nameScope.name</p>
+
+<p>第一个参数为true或者false</p>
+
+<p>extend(Boolean,src1,src2&#8230;srcN); //Boolean为true时，为深层拷贝；Boolean为false时，为浅拷贝。//例如var src1 = {name:&#8221;tom&#8221;,location:{city:&#8221;Beijing&#8221;,county:&#8221;China&#8221;}};</p>
+
+<p>var src2 = {name:&#8221;job&#8221;,location:{live:&#8221;New York&#8221;,county:&#8221;USA&#8221;}};$.extend(true,src1,src2);</p>
+
+<p>合并后，src1为：</p>
+
+<p>{name: &#8220;job&#8221;, location: {city: &#8220;Beijing&#8221;,county: &#8220;USA&#8221;,live: &#8220;New York&#8221;}}</p>
+
+<p>//里面的子元素也会进行合并$.extend(false,src1,src2);</p>
+
+<p>合并后，src1为：</p>
+
+<p>{name: &#8220;job&#8221;, location: {city: &#8220;Beijing&#8221;,county: &#8220;China&#8221;}}</p>
+
+<p>//里面的子元素不会合并，直接覆盖</p>
+
+<p>extend是写jQuery插件的利器，以上是关于如何使用它的细节，接下来会分析jQuery如何来实现extend方法。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Jquery's Extend]]></title>
+    <link href="http://liu1084.github.io/blog/2015/12/27/48-jquery-extend/"/>
+    <updated>2015-12-27T06:28:32+08:00</updated>
+    <id>http://liu1084.github.io/blog/2015/12/27/48-jquery-extend</id>
+    <content type="html"><![CDATA[<h1>jquery&rsquo;s extend</h1>
+
+<p>extend方法在jQuery中是一个很重要的方法，jQuey内部用它来扩展属性方法。常用语jQuery插件开发。</p>
+
+<p>jQuery提供了两个方法，$.extend和$.fn.extend,两个方法内部实现一样，但功能用法却不一样，按照官方解释：</p>
+
+<p>jQuery.extend(): Merge the contents of two or more objects together into the first object.(把两个或者更多的对象合并到第一个当中)</p>
+
+<p>jQuery.fn.extend():Merge the contents of an object onto the jQuery prototype to provide new jQuery instance methods.(把对象挂载到jQuery的prototype属性，来扩展一个新的jQuery实例方法)</p>
+
+<!--more-->
+
+
+<p>简单来说：$.extend(),是用来扩展jQuery静态方法；$.fn.extend()是用来扩展jQuery实例方法。</p>
+
+<p>用法</p>
+
+<p>$.extend({}) 或者$.fn.extend({})</p>
+
+<p>实例</p>
+
+<pre class="lang:js decode:true">//扩展静态方法：
+$.extend({
+    sayName:function (){
+        console.log("My name is jQuery");  
+    }
+});
+$.sayName(); //"My name is jQuery"
+//扩展实例方法：
+$.fn.extend({
+    check: function() {
+        return this.each(function() {
+            this.checked = true;
+        });
+    }
+});
+$( "input[type='checkbox']" ).check(); //所有的checkbox都会被选择
+Note:扩展的静态方法，直接使用$调用；扩展的实例方法，要用$()调用。</pre>
+
+
+<p>但是jQuery的extend还有另外一种用法，就是合并对象，这在合并默认参数和形参的时候非常有用。</p>
+
+<p>用法</p>
+
+<p>extend(dest,src1,src2&#8230;srcN);//可以传入N多个对象</p>
+
+<p>参数的含义：将src1,src2…srcN的每一项合并为dest的每一项，并返回合并后的对象</p>
+
+<p>实例</p>
+
+<pre class="lang:js decode:true">var dest = {name:"job",age:20},src1 = {name:"tom",live:"Beijing"};
+$.extend(dest,src1);
+console.log(dest);  //{name: "tom", age: 20,live:"Beijing"}</pre>
+
+
+<p>Note: dest的结构会发生变化。如果想得到合并的结果，并不修改dest的结构，可以这么做</p>
+
+<pre class="lang:js decode:true ">var dest = {name:"job",age:20},src1 = {name:"tom",live:"Beijing"};
+var newSrc = $.extend({}, dest, src1);
+console.log(dest); //newSrc就是得到的新对象</pre>
+
+
+
+
+<pre class="lang:js decode:true ">(function ($){
+    $.fn.extend({
+        dralog:function (options){
+            //设置默认样式
+            var deafualt = {
+                width:100,
+                height:100
+            };
+ 
+            //传过来的参数覆盖默认值
+            var style = $.extend({},deafualt,options);
+ 
+            $("div").css(style);
+        }
+    });
+})(jQuery);
+ 
+$().dralog({
+    width: 200,
+    height: 200
+});
+ 
+console.log(style); //deafualt变为：{width: 200, height: 200}</pre>
+
+
+
+
+<pre class="lang:js decode:true">//Boolean为true时，为深层拷贝；Boolean为false时，为浅拷贝。
+extend(Boolean,src1,src2...srcN); 
+
+//例如
+var src1 = {name:"tom",location:{city:"Beijing",county:"China"}};
+var src2 = {name:"job",location:{live:"New York",county:"USA"}};
+
+$.extend(true,src1,src2);
+
+合并后，src1为：
+{name: "job", location: {city: "Beijing",county: "USA",live: "New York"}}
+//里面的子元素也会进行合并
+
+$.extend(false,src1,src2);
+合并后，src1为：
+{name: "job", location: {city: "Beijing",county: "China"}}
+//里面的子元素不会合并，直接覆盖</pre>
+
+
+<p>extend是写jQuery插件的利器，以上是关于如何使用它的细节，接下来会分析jQuery如何来实现extend方法。</p>
+]]></content>
+  </entry>
+  
+</feed>

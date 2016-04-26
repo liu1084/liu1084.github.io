@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Big | Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/blog/categories/big/atom.xml" rel="self"/>
+  <link href="http://liu1084.github.io/"/>
+  <updated>2016-04-26T13:19:00+08:00</updated>
+  <id>http://liu1084.github.io/</id>
+  <author>
+    <name><![CDATA[Jim liu]]></name>
+    <email><![CDATA[liu1084@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[JavaScript中数字类型运算安全范围及开源大整数高精度计算库]]></title>
+    <link href="http://liu1084.github.io/?p=135"/>
+    <updated>2016-01-05T08:20:07+08:00</updated>
+    <id>http://liu1084.github.io/javascript-big-number</id>
+    <content type="html"><![CDATA[<p>JavaScript中整数的最大&#8221;安全&#8221;数值为在-(2<sup>53</sup> &#8211; 1) 和 (2<sup>53</sup> &#8211; 1) 之间，即：</p>
+
+<p>Number.MAX_SAFE_INTEGER ： 9007199254740991</p>
+
+<p>Number.MIN_SAFE_INTEGER ： 9007199254740991</p>
+
+<p>超过这个范围的数学计算在有可能是是不准确的，比如在目前最新版的Chrome中：</p>
+
+<blockquote><p>9007199254740991 * 256</p></blockquote>
+
+<p>2305843009213693700 //1 * 6 = 6, 最后一位应该是6?</p>
+
+<p>实现结果应该是： 2305843009213693696 即损失了一定的精度。</p>
+
+<p>JavaScript中的Number对象有一个 Number.isSafeInteger 可以判断此数值是否在安全范围:</p>
+
+<blockquote><p>Number.isSafeInteger(2305843009213693700)</p></blockquote>
+
+<p>false</p>
+
+<p>Crunch是用JavaScript写的一个任意精度的整数运算库。</p>
+
+<p>它被设计用来快速地执行算术运算，特别是那些基于非对称加密密码系统诸如RSA构建。</p>
+
+<p>使用</p>
+
+<p>Crunch 可以用被网站引用</p>
+
+<script src=&#8221;crunch.js&#8221;></script>
+
+
+
+
+<script>
+  
+var crunch = Crunch();
+  
+</script>
+
+
+<p>或者在web worker中引用</p>
+
+<p>var crunch = new Worker(&#8220;crunch.js&#8221;);</p>
+
+<p>或者在node模块中使用</p>
+
+<p>npm install number-crunch</p>
+
+<p>var crunch = require(&#8220;number-crunch&#8221;);</p>
+
+<p>范例 1</p>
+
+<p>x = [10, 123, 21, 127];</p>
+
+<p>y = [4, 211, 176, 200];</p>
+
+<p>crunch.add(x, y); //[15, 78, 198, 71]</p>
+
+<p>这个库使用8位（最大256）整型数组来表示“大整数”。但是在其内部它会被自动转换为28位整型数组。</p>
+
+<p>Crunch 同样可以转化和解析成10进制的字符串，(string上面的默认方法是无法表达大整数的) 使用.stringify() 和 .parse() 方法.</p>
+
+<p>范例 2</p>
+
+<p>crunch.stringify([1,2,3,4,5,6,7,8,9,0]); // &#8220;4759477275222530853120&#8221;</p>
+
+<p>crunch.parse(&#8220;4759477275222530853120&#8221;); // [1,2,3,4,5,6,7,8,9,0]</p>
+
+<p>支持的方法</p>
+
+<p>Function Input Parameters Output</p>
+
+<p>add x, y x + y</p>
+
+<p>sub x, y x &#8211; y</p>
+
+<p>mul x, y x * y</p>
+
+<p>div x, y x / y</p>
+
+<p>sqr x x * x</p>
+
+<p>mod x, y x % y</p>
+
+<p>bmr x, y, [mu] x % y</p>
+
+<p>exp x, e, n x<sup>e</sup> % n</p>
+
+<p>gar x, p, q, d, u, [dp1], [dq1] x<sup>d</sup> % pq</p>
+
+<p>inv x, y 1/x % y</p>
+
+<p>xor x, y x XOR y</p>
+
+<p>cut x Remove leading zeroes of x</p>
+
+<p>zero x Return zero array of length x</p>
+
+<p>compare x, y -1: x &lt; y, 0: x = y, 1: x > y</p>
+
+<p>decrement x x &#8211; 1</p>
+
+<p>factorial n n! [n &lt; 268435456]</p>
+
+<p>nextPrime x First prime after x</p>
+
+<p>testPrime x Boolean x is prime</p>
+
+<p>stringify x String (base 10 representation)</p>
+
+<p>parse s Arbitrary-precision integer</p>
+
+<p>transform x, [toRaw] Radix conversion</p>
+
+<p>Web Workers</p>
+
+<p>Crunch 可以在 Web Worker 中加载. 指令信息通过如下格式传递:</p>
+
+<p>{func: &#8220;&#8221;, args: []}</p>
+
+<p>例子 3</p>
+
+<p>var crunch = new Worker(&#8220;crunch.js&#8221;);</p>
+
+<p>var message = {func: &#8220;add&#8221;, args: [[10, 123, 21, 127], [4, 211, 176, 200]]};</p>
+
+<p>crunch.onmessage = function(m) {</p>
+
+<p>console.log(m);</p>
+
+<p>};</p>
+
+<p>crunch.postMessage(message);</p>
+
+<p>注* 并且JavaScript中位运算所操作的是32位有符号整数，此运算目前还不支持对位运算的扩展。</p>
+]]></content>
+  </entry>
+  
+</feed>

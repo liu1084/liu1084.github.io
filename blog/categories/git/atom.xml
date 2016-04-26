@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Git | Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/blog/categories/git/atom.xml" rel="self"/>
+  <link href="http://liu1084.github.io/"/>
+  <updated>2016-04-26T13:19:00+08:00</updated>
+  <id>http://liu1084.github.io/</id>
+  <author>
+    <name><![CDATA[Jim liu]]></name>
+    <email><![CDATA[liu1084@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Learning Git]]></title>
+    <link href="http://liu1084.github.io/?p=56"/>
+    <updated>2015-12-27T09:25:00+08:00</updated>
+    <id>http://liu1084.github.io/learning-git</id>
+    <content type="html"><![CDATA[<ol>
+<li>什么是git？</li>
+<li>为什么使用git？</li>
+<li>git跟svn有什么不同？</li>
+<li>为什么非要从svn转换到git？</li>
+<li>怎么使用git？</li>
+<li>git有没有不好的地方？</li>
+<li>如果遇到问题，我怎么获得帮助？</li>
+</ol>
+
+
+<!--more-->
+
+
+<p>版本控制系统的历史</p>
+
+<p>你可能有过这样的经历：</p>
+
+<ul>
+<li>在 debug 的时候这里加一句，那里减一句，顺便改改参数，不一会你的程序就从一个 bug 增加到了无数个 bug 。最重要的是，你完全想不起来自己到底改了几个地方，原来的程序到底长什么样子了。经历过几次这样的痛苦，你学乖了，下次 debug 之前先把原文件备份一下——改成 program.c.bak 什么的，然后放开了胆子改。有时候修改的次数多了，就会出现 program_V1.c.bak， program_V2.c.bak …… 又有时候需要同时修改多个文件。而需要倒回到之前的版本的时候，又完全想不起来这些 V1, V2 到底改了哪些地方。坑爹呐！难道要手工查不成？难道还要给每个 version 写个描述文件？</li>
+</ul>
+
+
+<p>想到这里，程序员们应该都中枪了。</p>
+
+<ul>
+<li>如果你不是程序员，那你应该编辑过word文档吧？写论文的时候，你可能这里改一下，那里改一下，改来改去发现还不如原来的初版&#8230;怎么办？Ctrl + Z能救你几次，那万一是关机以后，怎么Ctrl + Z?</li>
+</ul>
+
+
+<p>想到这里，我们都中枪了。</p>
+
+<ul>
+<li><p>那有没有办法解决这个问题？当然有了，这又不是一个人中枪的事情。。。</p></li>
+<li><p>1972年，贝尔实验室的程序员快被这个问题折磨疯了。。。于是有人写出史上第一个版本控制系统（VCS – Version Control System），名字叫SCCS，但是这个软件有个问题就是它是从最初的版本依次做快照开始，然后一直比对你想要哪个版本，当文件的修改逐渐增多后，变得效率就越来越慢，于是。。。</p></li>
+<li>有个大学教授Water，他发现SCCS有问题，正常的修改都是从最近的修改作为源文件，对历史的快照，用的不是太多，就写了另外一个，名字叫RCS，它的效率提高了，但是也有问题，只能监控单个文件，程序员们受不了，于是。。。</li>
+<li>终于有一天，CVS横空出世，他的诞生扭转了整个局面。不但效率提高n倍，而且还提出了仓库（repository）的概念，是CS结构的，把代码仓库放在Server端，由客户端向服务器端提出修改，还很好的支持了多用户多文件并行操作。但是CVS也有个问题，它监控的是文件，而不是目录，如果在项目里面创建目录，在里面添加文件，就无法被监控了，于是。。。</li>
+<li>SVN诞生了，它几乎吸收了CVS的所有优点，而且还添加了更多的功能，直到今天我们依然在用。。。</li>
+</ul>
+
+
+<p>Git诞生之前，免费的CVS发挥了巨大的作用，同时并存的还有bitkeeper这样的商用版本控制软件。</p>
+
+<p>说到Git，不得不说Linux系统。</p>
+
+<p>那个年代，Linus和全世界很多热心的程序员都在为Linux编写代码，那么Linux的代码是如何管理的？事实上，2002年之前，世界各地的参与者都是把源代码通过diff方式用邮件发给linus，然后手工合并代码。。。那有人会说，前面提到的这些RCS为啥不用呢？</p>
+
+<ul>
+<li>首先是“大神”对这些RCS的不屑；</li>
+<li>其次是Linux社区很活跃，参与的人太多，代码提交频繁以至于这些工具都无法胜任；</li>
+<li>不过，到了2002年，Linux系统已经发展了十年了，代码库之大让Linus很难继续通过手工方式管理了，社区的弟兄们也对这种方式表达了强烈不满，于是Linus选择了一个商业的版本控制系统BitKeeper，BitKeeper的东家BitMover公司出于人道主义精神，授权Linux社区免费使用这个版本控制系统。</li>
+<li>安定团结的大好局面在2005年就被打破了，原因是Linux社区牛人聚集，不免沾染了一些梁山好汉的江湖习气。开发Samba的Andrew试图破解BitKeeper的协议（这么干的其实也不只他一个），被BitMover公司发现了（监控工作做得不错！），于是BitMover公司怒了，要收回Linux社区的免费使用权。</li>
+<li><p>Linus可以向BitMover公司道个歉，保证以后严格管教弟兄们，嗯，这是不可能的。实际情况是这样的：</p>
+
+<p>Linus花了两周时间自己用C写了一个分布式版本控制系统，这就是Git！一个月之内，Linux系统的源码已经由Git管理了！牛是怎么定义的呢？大家可以体会一下。</p></li>
+<li>Git迅速成为最流行的分布式版本控制系统，尤其是2008年，GitHub网站上线了，它为开源项目免费提供Git存储，无数开源项目开始迁移至GitHub，包括jQuery，PHP，Ruby等等。</li>
+<li>历史就是这么偶然，如果不是当年BitMover公司威胁Linux社区，可能现在我们就没有免费而超级好用的Git了。</li>
+</ul>
+
+
+<p>一句话回答</p>
+
+<ol>
+<li>什么是git？ –  Git是一个免费且开源、支持分布式的版本控制系统，可以快速有效的管理大大小小的项目。</li>
+<li>为什么使用git？ – Git的好处多、速度快，使用简单方便，为了跟国际接轨（因为我们是global的嘛。。。）</li>
+<li>git跟svn有什么不同？ –  (分布式、效率高、简单方便、强大的分支和合并、完整性、无需网络也可以提交代码)</li>
+<li>为什么非要从svn转换到git？ – 请看问题2、问题3</li>
+<li>怎么使用git？ – 下面会讲到。。。</li>
+<li>git有没有不好的地方？ –  应该有吧，添加文件夹貌似不行</li>
+<li>如果遇到问题，我怎么获得帮助？ – （google->stackoverflow – 懒人、git  help <verb> – 勤快且英语比较好的人）</li>
+<li><p>&#8230; – 还有什么问题？ google 或者可以阅读它们的使用帮助（如果你的E文还可以），方法有三： <pre class="lang:sh decode:true ">$ git help &lt;verb&gt;
+$ git &lt;verb&gt; &ndash;help
+$ man git-&lt;verb&gt;</pre></p>
+
+<p>  比如，要学习 config 命令可以怎么用，运行：</li> </ol></p>
+
+<p>  <pre class="lang:sh decode:true">$ git help config</pre></p>
+
+<p>  安装配置</p>
+
+<pre><code>* Download
+</code></pre>
+
+<p>  <a href="http://git-scm.com/downloads">http://git-scm.com/downloads</a> 目前最稳定版本是2.6.4</p>
+
+<pre><code>* Installation
+
+  &lt;table class="confluenceTable"&gt;
+    &lt;tr&gt;
+      &lt;th class="confluenceTh"&gt;
+        OS
+      &lt;/th&gt;
+
+      &lt;th class="confluenceTh" colspan="2"&gt;
+        How to install
+      &lt;/th&gt;
+    &lt;/tr&gt;
+
+    &lt;tr&gt;
+      &lt;td class="confluenceTd"&gt;
+        Windows
+      &lt;/td&gt;
+
+      &lt;td class="confluenceTd" colspan="2"&gt;
+        Git-1.9.5.exe(&lt;a href="#"&gt;download&lt;/a&gt;)&lt;/p&gt; 
+
+        &lt;p&gt;
+          &lt;a class="external-link" href="http://msysgit.github.io/" rel="nofollow"&gt;http://msysgit.github.io/&lt;/a&gt;&lt;/td&gt; &lt;/tr&gt; 
+
+          &lt;tr&gt;
+            &lt;td class="confluenceTd" colspan="1"&gt;
+              Linux
+            &lt;/td&gt;
+
+            &lt;td class="confluenceTd" colspan="2"&gt;
+              &lt;div class="code panel pdl"&gt;
+                &lt;div class="codeContent panelContent pdl"&gt;
+                  &lt;div id="highlighter_607654" class="syntaxhighlighter bash"&gt;
+                    &lt;pre class="lang:sh decode:true"&gt;$ yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel
+</code></pre>
+
+<p>$ apt-get install libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev
+$ wget <a href="https://www.kernel.org/pub/software/scm/git/git-2.4.0.tar.gz%C2%A0">https://www.kernel.org/pub/software/scm/git/git-2.4.0.tar.gz%C2%A0</a>
+$ tar -zvxf git-2.4.0.tar.gz
+$ cd git-2.4.0
+$ make prefix=/usr/local all
+$ sudo make prefix=/usr/local install 
+$ sudo ln -s /usr/local/git-2.4.0/bin/git /usr/bin/git
+$ git &ndash;version
+git version 2.4.0</pre>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr></p>
+
+<pre><code>          &lt;tr&gt;
+            &lt;td class="confluenceTd" colspan="1"&gt;
+              Mac
+            &lt;/td&gt;
+
+            &lt;td class="confluenceTd" colspan="2"&gt;
+              &lt;div class="code panel pdl"&gt;
+                &lt;div class="codeContent panelContent pdl"&gt;
+                  &lt;div id="highlighter_951215" class="syntaxhighlighter bash"&gt;
+                    &lt;pre class="lang:sh decode:true"&gt;sudo port install git-core +svn +doc +bash_completion +gitweb&lt;/pre&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/td&gt;
+          &lt;/tr&gt;&lt;/tbody&gt; &lt;/table&gt; &lt;/li&gt; &lt;/ul&gt; 
+
+          &lt;p&gt;
+            Git-GUI（option）
+          &lt;/p&gt;
+
+          &lt;p&gt;
+            TortoiseGit(&lt;a class="external-link" href="https://download.tortoisegit.org/tgit/" rel="nofollow"&gt;donwload&lt;/a&gt;)
+          &lt;/p&gt;
+
+          &lt;p&gt;
+            Eclipse &lt;a class="external-link" href="http://eclipse.org/egit/" rel="nofollow"&gt;egit&lt;/a&gt;
+          &lt;/p&gt;
+
+          &lt;ul&gt;
+            &lt;li&gt;
+              检查git版本
+            &lt;/li&gt;
+          &lt;/ul&gt;
+
+          &lt;pre class="lang:sh decode:true"&gt;$ git --version
+</code></pre>
+
+<p>git version 2.6.4</pre></p>
+
+<pre><code>          &lt;ul&gt;
+            &lt;li&gt;
+              配置
+            &lt;/li&gt;
+          &lt;/ul&gt;
+
+          &lt;p&gt;
+            查看已有配置项 &amp;#8211; display git config key &amp; value
+          &lt;/p&gt;
+
+          &lt;pre class="lang:sh decode:true"&gt;$ git config -l
+</code></pre>
+
+<p>core.symlinks=false
+core.autocrlf=true
+color.diff=auto
+color.status=auto
+color.branch=auto
+color.interactive=true
+pack.packsizelimit=2g
+help.format=html
+http.sslcainfo=/bin/curl-ca-bundle.crt
+sendemail.smtpserver=/bin/msmtp.exe
+diff.astextplain.textconv=astextplain
+rebase.autosquash=true</pre></p>
+
+<pre><code>          &lt;p&gt;
+            查看某个配置项 &amp;#8211;  display a config item
+          &lt;/p&gt;
+
+          &lt;pre class="lang:sh decode:true"&gt;$ git config merge.tool&lt;/pre&gt;
+
+          &lt;p&gt;
+            添加新的配置项 &amp;#8211; add a new config item
+          &lt;/p&gt;
+
+          &lt;pre class="lang:sh decode:true"&gt;$ git config --global user.name &amp;lt;name&amp;gt;
+</code></pre>
+
+<p>$ git config &ndash;global user.email &lt;email&gt;
+$ git config &ndash;global http.sslVerify false (option)</pre></p>
+
+<pre><code>          &lt;p&gt;
+            &lt;strong&gt;&lt;em&gt;&lt;a href="http://blog.83096146.com/?p=53"&gt;跟github一起工作 &amp;#8212; work with github&lt;/a&gt;&lt;/em&gt;&lt;/strong&gt;
+          &lt;/p&gt;
+
+          &lt;p&gt;
+            git base workflow
+          &lt;/p&gt;
+
+          &lt;ul&gt;
+            &lt;li&gt;
+              建立一个新的资源库 &amp;#8211; create a new repository
+            &lt;/li&gt;
+          &lt;/ul&gt;
+
+          &lt;pre class="lang:sh decode:true"&gt;$ cd my-project
+</code></pre>
+
+<p>$ git init</pre></p>
+
+<pre><code>          &lt;ul&gt;
+            &lt;li&gt;
+              通过git从服务器下载一个资源 &amp;#8211; clone a repository from remote
+            &lt;/li&gt;
+          &lt;/ul&gt;
+
+          &lt;pre class="lang:sh decode:true"&gt;$ git clone
+</code></pre>
+
+<p>git clone ~/existing/repo ~/new/repo
+git clone git://host.org/project.git
+git clone ssh://you@host.org/proj.git</p></li>
+</ol>
+
+
+<p>实例：
+$ git clone <a href="https://github.com/growthy/frontend.git">https://github.com/growthy/frontend.git</a>
+Cloning into &lsquo;frontend&rsquo;&hellip;
+Username for &lsquo;<a href="https://github.com">https://github.com</a>&rsquo;: root
+Password for &lsquo;<a href="https://root@github.com">https://root@github.com</a>&rsquo;:
+remote: Counting objects: 253, done.
+remote: Compressing objects: 100% (173/173), done.
+Receiving objects:  66% (1), reused 124 (delta 27) eceiving objects:  65% (165/253)
+Receiving objects: 100% (253/253), 746.95 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (73/73), done.
+Checking connectivity&hellip; done.
+</pre></p>
+
+<pre><code>            &lt;ul&gt;
+              &lt;li&gt;
+                查看当前的工作分支和所有分支 &amp;#8211; display current branch and all branch
+              &lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;pre class="lang:sh decode:true"&gt;$ git branch
+</code></pre>
+
+<ul>
+<li><p>master
+</pre></p>
+
+<pre><code>          &lt;ul&gt;
+            &lt;li&gt;
+              建立一个新的分支并在新分支上开发新的功能 &amp;#8211; create a new branch &amp; switch to it
+            &lt;/li&gt;
+          &lt;/ul&gt;
+
+          &lt;pre class="lang:sh decode:true "&gt;$ git checkout -b worldmap
+</code></pre>
+
+<p>Switched to a new branch &lsquo;worldmap&rsquo;
+$ git status
+On branch worldmap
+nothing to commit, working directory clean
+$ git branch
+develop
+master</p></li>
+<li><p>worldmap
+$ vim package.json
+$ git add package.json
+$ git commit -m &ldquo;modify repository of package.json&rdquo;
+[worldmap bcd196f] modify repository of package.json
+1 file changed, 4 insertions(+), 1 deletion(-)
+</pre></p>
+
+<pre><code>          &lt;ul&gt;
+            &lt;li&gt;
+              合并新分支到开发的主分支 &amp;#8211; merge new branch to main branch
+            &lt;/li&gt;
+          &lt;/ul&gt;
+
+          &lt;pre class="lang:sh decode:true "&gt;$ git checkout develop
+</code></pre>
+
+<p>Switched to branch &lsquo;develop&rsquo;
+$ git merge worldmap
+Updating 73b5cfd..bcd196f
+Fast-forward
+package.json | 5 ++++-
+1 file changed, 4 insertions(+), 1 deletion(-)
+</pre></p>
+
+<pre><code>          &lt;ul&gt;
+            &lt;li&gt;
+              推送内容到服务器 &amp;#8211; Update remote refs along with associated objects
+            &lt;/li&gt;
+          &lt;/ul&gt;
+
+          &lt;pre class="lang:sh decode:true "&gt;$ git push origin develop
+</code></pre>
+
+<p>Username for &lsquo;<a href="https://github.com">https://github.com</a>&rsquo;: root
+Password for &lsquo;<a href="https://root@github.com">https://root@github.com</a>&rsquo;:
+Counting objects: 5, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 388 bytes | 0 bytes/s, done.
+Total 3 (delta 2), reused 0 (delta 0)
+To <a href="https://github.com/growthy/frontend.git">https://github.com/growthy/frontend.git</a>
+ 73b5cfd..bcd196f  develop -&gt; develop
+</pre></p>
+
+<pre><code>          &lt;ul&gt;
+            &lt;li&gt;
+              删除分支 &amp;#8211; remove a branch
+            &lt;/li&gt;
+          &lt;/ul&gt;
+
+          &lt;pre class="lang:sh decode:true"&gt;$ git branch -d worldmap
+</code></pre>
+
+<p>Deleted branch worldmap (was bcd196f).</p></li>
+</ul>
+
+
+<p>$ git branch
+* develop
+  master
+</pre></p>
+
+<pre><code>            &lt;ul&gt;
+              &lt;li&gt;
+                添加新文件到工作区
+              &lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;pre class="lang:sh decode:true "&gt;$ git branch
+</code></pre>
+
+<ul>
+<li>develop
+master</li>
+</ul>
+
+
+<p>$ git checkout -b test
+Switched to a new branch &lsquo;test&rsquo;</p>
+
+<p>$ touch
+.git/         .gitignore    LICENSE       README.md     generators/   package.json</p>
+
+<p>$ touch test.txt
+$ echo &ldquo;test&rdquo; &gt; test.txt
+$ git status
+On branch test
+Untracked files:
+  (use &ldquo;git add &hellip;&rdquo; to include in what will be committed)
+        test.txt
+nothing added to commit but untracked files present (use &ldquo;git add&rdquo; to track)</p>
+
+<p>$ git status
+On branch test
+Changes to be committed:
+  (use &ldquo;git reset HEAD &hellip;&rdquo; to unstage)
+        new file:   test.txt</p>
+
+<p>$ git add test.txt
+$ git commit -m &ldquo;add test.txt&rdquo;
+[test 9cbfff7] add test.txt
+ 1 file changed, 1 insertion(+)
+ create mode 100644 test.txt</p>
+
+<p>$ git status
+On branch test
+nothing to commit, working directory clean
+</pre></p>
+
+<pre><code>            &lt;ul&gt;
+              &lt;li&gt;
+                从工作区删除或者移动文件
+              &lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;pre class="lang:sh decode:true "&gt;git log
+</code></pre>
+
+<p>git reset sha-1
+git checkout &ndash; filname</p>
+
+<p></pre></p>
+
+<pre><code>            &lt;ul&gt;
+              &lt;li&gt;
+                删除没用合并的分支
+              &lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;pre class="lang:sh decode:true "&gt;$ git checkout develop
+</code></pre>
+
+<p>Switched to branch &lsquo;develop&rsquo;</p>
+
+<p>$ git branch -d test
+error: The branch &lsquo;test&rsquo; is not fully merged.
+If you are sure you want to delete it, run &lsquo;git branch -D test&rsquo;.</p>
+
+<p>$ git branch -D test
+Deleted branch test (was fc20997).</p>
+
+<p>$ git log
+commit bcd196f501738da34c1746ec0f1f6d18b9fd778b
+Author: liujun &lt;liu.jun@nhn.com&gt;
+Date:   Thu Mar 19 11:30:33 2015 +0800
+    modify repository of package.json</p>
+
+<p></pre></p>
+
+<pre><code>            &lt;ul&gt;
+              &lt;li&gt;
+                修改新建的文件
+              &lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;pre class="lang:sh decode:true "&gt;//准备修改license的内容
+</code></pre>
+
+<p>$ vim LICENSE
+$ git status
+On branch license
+Changes not staged for commit:
+  (use &ldquo;git add &hellip;&rdquo; to update what will be committed)
+  (use &ldquo;git checkout &ndash; &hellip;&rdquo; to discard changes in working directory)
+        modified:   LICENSE
+no changes added to commit (use &ldquo;git add&rdquo; and/or &ldquo;git commit -a&rdquo;)
+//放弃修改
+$ git checkout &ndash; LICENSE</p>
+
+<p>//确认修改
+$ git add LICENSE</p>
+
+<p></pre></p>
+
+<pre><code>            &lt;ul&gt;
+              &lt;li&gt;
+                提交到本地
+              &lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;pre class="lang:sh decode:true "&gt;$ git add LICENSE
+</code></pre>
+
+<p>$ git status
+On branch license
+Changes to be committed:
+  (use &ldquo;git reset HEAD &hellip;&rdquo; to unstage)
+        modified:   LICENSE</p>
+
+<p></pre></p>
+
+<pre><code>            &lt;ul&gt;
+              &lt;li&gt;
+                废弃本地修改
+              &lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;pre class="lang:sh decode:true "&gt;git checkout --
+</code></pre>
+
+<p></pre></p>
+
+<pre><code>            &lt;ul&gt;
+              &lt;li&gt;
+                将添加到索引区的文件还原为未添加
+              &lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;pre class="lang:sh decode:true "&gt;$ git reset HEAD LICENSE
+</code></pre>
+
+<p>Unstaged changes after reset:
+M       LICENSE</p>
+
+<p></pre></p>
+
+<pre><code>            &lt;ul&gt;
+              &lt;li&gt;
+                返回到历史
+              &lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;pre class="lang:sh decode:true "&gt;$ git commit -m "update LICENSE"
+</code></pre>
+
+<p>[license 2881fbc] update LICENSE
+ 1 file changed, 8 insertions(+)</p>
+
+<p>$ git status
+On branch license
+nothing to commit, working directory clean</p>
+
+<p>$ git log
+commit 2881fbc404483487d04093cc639a0d5ddc60585e
+Author: liujun &lt;liu.jun@nhn.com&gt;
+Date:   Thu Mar 19 15:20:21 2015 +0800
+    update LICENSE
+$ git revert 2881fbc404483487d04093cc639a0d5ddc60585e
+[license b28b13b] Revert &ldquo;update LICENSE&rdquo;
+ 1 file changed, 8 deletions(-)
+CN40309-D-1@CN40309-D-1 /D/work/cli/generator-gdc-web-
+$ git status
+On branch license
+nothing to commit, working directory clean</p>
+
+<p>$ cat LICENSE</p>
+
+<p></pre></p>
+
+<pre><code>            &lt;ul&gt;
+              &lt;li&gt;
+                推送已经提交到本地的修改到服务器
+              &lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;pre class="lang:sh decode:true "&gt;//推送你的改动到远端的任意一个分支上去
+</code></pre>
+
+<p>$ git push orgin</p>
+
+<p>//如果你事先没有clone仓库，但是想将你的仓库连接到某个远端仓库，可以使用
+$ git remote add origin
+//然后再进行推送</p>
+
+<p></pre></p>
+
+<pre><code>            &lt;ul&gt;
+              &lt;li&gt;
+                查看文件的修改
+              &lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;pre class="lang:sh decode:true "&gt;git diff [filename]
+</code></pre>
+
+<p></pre></p>
+
+<pre><code>            &lt;ul&gt;
+              &lt;li&gt;
+                从服务器拖拽文件到本地，并且尝试合并
+              &lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;pre class="lang:sh decode:true "&gt;git pull
+</code></pre>
+
+<p></pre></p>
+
+<pre><code>            &lt;ul&gt;
+              &lt;li&gt;
+                建立新的tag
+              &lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;pre class="lang:sh decode:true "&gt;//在软件发布或者打版本的时候创建标签，是推荐的做法
+</code></pre>
+
+<p>//创建一个1.0.0的标签
+$ git checkout my_feature</p>
+
+<p>$ git log
+commit feaa0131231818272229f0074527e57470b0ce5d
+Author: cn40309 &lt;liu.jun@nhn.com&gt;
+Date:   Thu Jan 29 15:01:29 2015 +0800
+        new file:   pom.xml
+commit 490b91494502d590053418230cec6b06358fbf2a
+Author: cn40309 &lt;liu.jun@nhn.com&gt;
+Date:   Thu Jan 29 14:58:55 2015 +0800
+        new file:   MainController.java</p>
+
+<p>$ git tag 1.0.0 feaa01312318182
+</pre></p>
+
+<pre><code>            &lt;ul&gt;
+              &lt;li&gt;
+                删除tag
+              &lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;pre class="lang:sh decode:true "&gt;git tag -d v1.0
+</code></pre>
+
+<p></pre></p>
+
+<pre><code>            &lt;p&gt;
+              &lt;em&gt;&lt;strong&gt;&lt;a href="https://try.github.io/levels/1/challenges/1" target="_blank"&gt;I want to try git online&lt;/a&gt;&lt;/strong&gt;&lt;/em&gt;
+            &lt;/p&gt;
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Using Git on Github]]></title>
+    <link href="http://liu1084.github.io/?p=53"/>
+    <updated>2015-12-27T08:50:34+08:00</updated>
+    <id>http://liu1084.github.io/using-git-on-github</id>
+    <content type="html"><![CDATA[<ol>
+<li><p>首先在<a class="external-link" href="https://github.com/" rel="nofollow">github.com</a>上建一个帐号，例如：</p>
+
+<p>帐号：myGitName</p>
+
+<p>Email：<a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#58;&#x6d;&#121;&#71;&#105;&#x74;&#x4e;&#97;&#109;&#x65;&#64;&#x67;&#109;&#97;&#x69;&#108;&#x2e;&#x63;&#111;&#109;">&#109;&#121;&#71;&#105;&#x74;&#x4e;&#97;&#x6d;&#x65;&#64;&#103;&#109;&#x61;&#x69;&#108;&#46;&#99;&#111;&#x6d;</a></p></li>
+<li><p>安装git，windows用户安装<a class="external-link" href="http://msysgit.github.io/" rel="nofollow">msysgit</a></p>
+
+<p><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image confluence-external-resource" src="http://msysgit.github.io/img/details_contribute.png" alt="msysGit Logo" width="100" data-image-src="http://msysgit.github.io/img/details_contribute.png" /></span></p></li>
+<li><p>设置用户的用户名和email，这里的用户名和email应该跟第一步建立的github.com帐号、email一致</p>
+
+<p>git config user.name &#8211;global</p>
+
+<p>git config user.email &#8211;global</p></li>
+<li><p>在本地生成公钥，设置SSH keys并加入github中以便进行认证</p>
+
+<p>打开git bash终端，输入：</p>
+
+<p>ssh-keygen -C &#8220;myGitName@gmail.com&#8221; -t rsa</p>
+
+<p>cat /c/Users/Administrator/.ssh/id_rsa.pub</p>
+
+<p>ssh-keygen默认会添加一个git帐号。</p>
+
+<p>将输出的内容复制并粘贴在github.com的SSH Key中。测试公钥配置是否成功。</p>
+
+<p>ssh &#8211;<a class="external-link" href="mailto:T%C2%A0git@github.com" rel="nofollow">T <a href="&#109;&#x61;&#x69;&#108;&#116;&#111;&#58;&#x67;&#x69;&#116;&#64;&#x67;&#x69;&#116;&#x68;&#117;&#98;&#x2e;&#x63;&#111;&#109;">&#103;&#x69;&#x74;&#x40;&#x67;&#105;&#116;&#104;&#x75;&#x62;&#x2e;&#99;&#111;&#x6d;</a></a></p>
+
+<p>输出：</p>
+
+<p>Hi myGitName! You&#8217;ve successfully authenticated, but GitHub does not provide shell</p>
+
+<p>access.表示公钥配置成功。</p></li>
+<li>在github上创建一个新的仓库，并加入版权信息和README.md文件，默认的分支名称是master</li>
+<li><p>在本地初始化，并将刚刚创建的仓库拉到本地进行编辑修改</p>
+
+<p>git init</p>
+
+<p>git add somefolder</p>
+
+<p>git commit -c &#8220;My first commit&#8221;</p></li>
+<li><p>添加新的文件，提交到本地仓库</p>
+
+<p>git add somefiles</p>
+
+<p>git commit -m &#8220;commit&#8221;</p>
+
+<p>git push -a</p></li>
+<li><p>将本地分支合并到github.com master分支</p>
+
+<p>git merge test</p></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>

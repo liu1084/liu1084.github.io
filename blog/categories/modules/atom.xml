@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Modules | Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/blog/categories/modules/atom.xml" rel="self"/>
+  <link href="http://liu1084.github.io/"/>
+  <updated>2016-04-26T13:19:00+08:00</updated>
+  <id>http://liu1084.github.io/</id>
+  <author>
+    <name><![CDATA[Jim liu]]></name>
+    <email><![CDATA[liu1084@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[node/How to Config Npm Global Node_modules Location?]]></title>
+    <link href="http://liu1084.github.io/blog/2016/04/08/node-slash-how-to-config-npm-global-node-modules-location/"/>
+    <updated>2016-04-08T00:11:17+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/04/08/node-slash-how-to-config-npm-global-node-modules-location</id>
+    <content type="html"><![CDATA[<h1>How to config npm global node_modules location?</h1>
+
+<p>When U <code>npm install packageName</code>, npm will find npm config variable: <code>prefix</code>&rsquo;s value, IF NOT, on *NIX OS, default location is <code>/usr/local/lib/node</code> or <code>/usr/local/lib/node_modules</code>, on windows, it will be <code>C:\Users\youname\.npm</code>;</p>
+
+<p>How to edit the value of profix?</p>
+
+<ul>
+<li><p>list current config</p>
+
+<p>  <code>npm config list</code></p></li>
+<li><p>edit or set config</p>
+
+<p>  <code>npm config edit</code> OR</p>
+
+<p>  <code>npm config set &lt;key&gt; &lt;value&gt;</code></p></li>
+<li><p>Or</p>
+
+<p>  Usage:</p>
+
+<p>  <code>npm config set &lt;key&gt; &lt;value&gt;</code></p>
+
+<p>  <code>npm config get [&lt;key&gt;]</code></p>
+
+<p>  <code>npm config delete &lt;key&gt;</code></p>
+
+<p>  <code>npm config list</code></p>
+
+<p>  <code>npm config edit</code></p>
+
+<p>  <code>npm set &lt;key&gt; &lt;value&gt;</code></p>
+
+<p>  <code>npm get [&lt;key&gt;]</code></p></li>
+</ul>
+
+
+<p>Enjoy it!</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Nginx | Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/blog/categories/nginx/atom.xml" rel="self"/>
+  <link href="http://liu1084.github.io/"/>
+  <updated>2016-04-26T13:19:00+08:00</updated>
+  <id>http://liu1084.github.io/</id>
+  <author>
+    <name><![CDATA[Jim liu]]></name>
+    <email><![CDATA[liu1084@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[How to Disable HTTP Header &#8212; Server Include Nginx Version?]]></title>
+    <link href="http://liu1084.github.io/?p=213"/>
+    <updated>2016-01-26T23:29:16+08:00</updated>
+    <id>http://liu1084.github.io/how-to-disable-http-header-server-include-nginx-version</id>
+    <content type="html"><![CDATA[<p>When your nginx woking, if you access it, nginx will return back nginx/X.XX.X.</p>
+
+<p>I recommand to not display version, only display &#8220;nginx&#8221;.</p>
+
+<p>How to?Add server_tokens to http context and set it to off,like this:</p>
+
+<pre>http {
+    server_tokens off;
+    include       mime.types;
+    default_type  application/octet-stream;
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+    access_log  /var/log/nginx/access.log  main;
+    sendfile        on;
+    #tcp_nopush     on;
+    keepalive_timeout  65;
+    gzip  on;
+    include     vhost/*.conf;
+}
+
+</pre>
+
+
+<p>then,</p>
+
+<pre>/usr/local/nginx/sbin/ngin -t
+</pre>
+
+
+<p>if test is OK,</p>
+
+<p>reload config file by:</p>
+
+<pre>/usr/local/nginx/sbin/ngin -s reload
+</pre>
+
+]]></content>
+  </entry>
+  
+</feed>

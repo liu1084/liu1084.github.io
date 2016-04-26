@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Express, | Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/blog/categories/express/atom.xml" rel="self"/>
+  <link href="http://liu1084.github.io/"/>
+  <updated>2016-04-26T13:19:00+08:00</updated>
+  <id>http://liu1084.github.io/</id>
+  <author>
+    <name><![CDATA[Jim liu]]></name>
+    <email><![CDATA[liu1084@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[express/How to Set Header to Allow Cross-domain Access Using CORS]]></title>
+    <link href="http://liu1084.github.io/blog/2016/04/07/express-slash-how-to-set-header-to-allow-cross-domain-access-using-cors/"/>
+    <updated>2016-04-07T01:36:31+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/04/07/express-slash-how-to-set-header-to-allow-cross-domain-access-using-cors</id>
+    <content type="html"><![CDATA[<h1>How to set header to allow cross domain using CORS</h1>
+
+<p>If you use express to develop a APP, a browser display a error:</p>
+
+<blockquote><p>XMLHttpRequest cannot load <a href="http://localhost:3000/user.">http://localhost:3000/user.</a> No &lsquo;Access-Control-Allow-Origin&rsquo; header is present on the requested resource. Origin &lsquo;<a href="http://localhost:63342">http://localhost:63342</a>&rsquo; is therefore not allowed access.</p></blockquote>
+
+<p>You can add the code to your app:</p>
+
+<pre><code>var express = require('express');
+var db = require('../common/db/db.config').db;
+db.bind('user');
+var app = express();
+
+//设置跨域访问  
+app.all('*', function(req, res, next) {  
+    res.header("Access-Control-Allow-Origin", "*");  
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");  
+    res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");  
+    res.header("X-Powered-By",' 3.2.1')  
+    res.header("Content-Type", "application/json;charset=utf-8");  
+    next();  
+});
+</code></pre>
+
+<p>Enjoy yourself;</p>
+]]></content>
+  </entry>
+  
+</feed>

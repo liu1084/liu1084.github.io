@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Standalone | Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/blog/categories/standalone/atom.xml" rel="self"/>
+  <link href="http://liu1084.github.io/"/>
+  <updated>2016-04-26T13:19:00+08:00</updated>
+  <id>http://liu1084.github.io/</id>
+  <author>
+    <name><![CDATA[Jim liu]]></name>
+    <email><![CDATA[liu1084@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[tools/How to Download a Standalone Google Chrome]]></title>
+    <link href="http://liu1084.github.io/blog/2016/04/10/tools-slash-how-to-download-a-standalone-google-chrome/"/>
+    <updated>2016-04-10T00:45:00+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/04/10/tools-slash-how-to-download-a-standalone-google-chrome</id>
+    <content type="html"><![CDATA[<h1>How to download a standalone google Chrome?</h1>
+
+<p>In China, If you want to use google service(example: g+, google play or google search engine, map&hellip;), it is a difficult thing like make me in the sky. Ok, if you want install google chrome, the same to it.</p>
+
+<p>Or, if you want only download a chrome which is standalone. So easy, like this:</p>
+
+<p><a href="https://www.google.com/chrome/browser/thankyou.html?platform=win64&amp;standalone=1&amp;installdataindex=defaultbrowser">download 64bit windowns version</a></p>
+
+<ul>
+<li>platform: windows 64bit</li>
+<li>stantandalone: 1</li>
+</ul>
+
+
+<p>the download link:
+<a href="https://www.google.com/chrome/browser/thankyou.html?platform=win64&amp;standalone=1&amp;installdataindex=defaultbrowser">https://www.google.com/chrome/browser/thankyou.html?platform=win64&amp;standalone=1&amp;installdataindex=defaultbrowser</a></p>
+]]></content>
+  </entry>
+  
+</feed>
