@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://liu1084.github.io/blog/2016/05/07/svn-slash-checkout-slash-how-to-co-repo-with-username-and-password/</loc>
+<lastmod>2016-05-07T14:35:49+08:00</lastmod>
+</url>
+<url>
 <loc>http://liu1084.github.io/blog/2016/04/22/linux-slash-how-to-make-a-service-running-as-a-daemon/</loc>
 <lastmod>2016-04-22T20:49:25+08:00</lastmod>
 </url>
@@ -433,5 +437,20 @@
 </url>
 <url>
 <loc>http://liu1084.github.io/blog/categories/edit/</loc>
+</url>
+<url>
+<loc>http://liu1084.github.io/blog/categories/svn/</loc>
+</url>
+<url>
+<loc>http://liu1084.github.io/blog/categories/checkout/</loc>
+</url>
+<url>
+<loc>http://liu1084.github.io/blog/categories/co/</loc>
+</url>
+<url>
+<loc>http://liu1084.github.io/blog/categories/username/</loc>
+</url>
+<url>
+<loc>http://liu1084.github.io/blog/categories/password/</loc>
 </url>
 </urlset>
