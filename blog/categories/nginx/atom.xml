@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Nginx | Jim's Blog]]></title>
   <link href="http://liu1084.github.io/blog/categories/nginx/atom.xml" rel="self"/>
   <link href="http://liu1084.github.io/"/>
-  <updated>2016-05-07T18:12:31+08:00</updated>
+  <updated>2016-05-16T11:19:45+08:00</updated>
   <id>http://liu1084.github.io/</id>
   <author>
     <name><![CDATA[Jim liu]]></name>
@@ -12,6 +12,155 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[linux/nginx/How to Config Nginx With SSL]]></title>
+    <link href="http://liu1084.github.io/blog/2016/05/09/linux-slash-nginx-slash-how-to-config-nginx-with-ssl/"/>
+    <updated>2016-05-09T09:36:25+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/05/09/linux-slash-nginx-slash-how-to-config-nginx-with-ssl</id>
+    <content type="html"><![CDATA[<ul>
+<li><p>step 0: Create directories &amp; Create config files</p>
+
+<p>  cd nginx-VERSION</p>
+
+<p>  mkdir -p vhost</p>
+
+<p>  mkdir -p conf/ssl</p>
+
+<p>  touch vhost/googleapis.conf</p></li>
+<li><p>step 1: Generate a Self-Signed Certificate</p>
+
+<p>  cd conf/ssl</p>
+
+<p>  openssl req -newkey rsa:2048 -nodes -keyout server.key -x509 -days 99999 -out server.crt</p>
+
+<p>  Generating a 2048 bit RSA private key
+  &hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;.+++
+  &hellip;&hellip;&hellip;&hellip;+++
+  writing new private key to &lsquo;server.key&rsquo;
+  -&mdash;-
+  You are about to be asked to enter information that will be incorporated
+  into your certificate request.
+  What you are about to enter is what is called a Distinguished Name or a DN.
+  There are quite a few fields but you can leave some blank
+  For some fields there will be a default value,
+  If you enter &lsquo;.&rsquo;, the field will be left blank.
+  -&mdash;-
+  Country Name (2 letter code) [AU]:CN
+  State or Province Name (full name) [Some-State]:LIAONING
+  Locality Name (eg, city) []:DALIAN CITY
+  Organization Name (eg, company) [Internet Widgits Pty Ltd]:MyCompany Co. Ltd
+  Organizational Unit Name (eg, section) []:Platform
+  Common Name (e.g. server FQDN or YOUR name) []:ajax.googleapis.com
+  Email Address []:<a href="&#x6d;&#97;&#105;&#108;&#116;&#111;&#58;&#108;&#105;&#x75;&#x31;&#x30;&#x38;&#x34;&#64;&#x67;&#x6d;&#97;&#105;&#108;&#46;&#x63;&#111;&#x6d;">&#x6c;&#x69;&#117;&#49;&#x30;&#56;&#52;&#64;&#x67;&#109;&#97;&#105;&#x6c;&#x2e;&#99;&#x6f;&#x6d;</a></p></li>
+<li><p>step 2: Add Certificate to nginx</p></li>
+</ul>
+
+
+<p>vim conf/nginx.conf</p>
+
+<pre><code>user  nobody;
+worker_processes  4;
+error_log  d:/http/nginx-1.9.12/logs/nginx.error.log  info;
+pid        d:/http/nginx-1.9.12/nginx.pid;
+events {
+    worker_connections  1024;
+}
+
+http {
+    server_tokens off;
+    include       mime.types;
+    default_type  application/octet-stream;
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+    access_log  d:/http/nginx-1.9.12/logs/access.log  main;
+    sendfile        on;
+    tcp_nopush     on;
+    keepalive_timeout  65;
+    gzip  on;
+
+    include vhost/*.conf;
+}
+</code></pre>
+
+<p>vim vhost/googleapis.conf</p>
+
+<pre><code>server {
+    listen       80;
+    server_name  ajax.googleapis.com;
+    root d:/http/nginx-1.9.12/html/googleapis;
+    index index.php index.html;
+    charset utf-8;
+    access_log  d:/http/nginx-1.9.12/logs/ajax.googleapis.com.access.log  main;
+
+    location / {
+        try_files $uri $uri/ /404.html;
+    }
+    error_page  404              /404.html;
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   html;
+    }
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_index index.php;
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+    location ~ /\.ht {
+        deny  all;
+    }
+}
+
+server {
+    listen       443;
+    server_name  ajax.googleapis.com;
+    root d:/http/nginx-1.9.12/html/googleapis;
+    index index.php index.html;
+    charset utf-8;
+    access_log  d:/http/nginx-1.9.12/logs/ajax.googleapis.com-ssl.access.log  main;
+    ssl on;
+    ssl_certificate D:/http/nginx-1.9.12/conf/ssl/server.crt;
+    ssl_certificate_key D:/http/nginx-1.9.12/conf/ssl/server.key;
+
+    location / {
+        try_files $uri $uri/ /404.html;
+    }
+    error_page  404              /404.html;
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   html;
+    }
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_index index.php;
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+    location ~ /\.ht {
+        deny  all;
+    }
+}
+</code></pre>
+
+<ul>
+<li><p>step 3: Checking your nginx configure</p>
+
+<p>  nginx -t</p></li>
+<li><p>step 4: Restart nginx</p>
+
+<p>  nginx -s reload</p></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How to Disable HTTP Header &#8212; Server Include Nginx Version?]]></title>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Shell | Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/blog/categories/shell/atom.xml" rel="self"/>
+  <link href="http://liu1084.github.io/"/>
+  <updated>2016-05-16T11:19:45+08:00</updated>
+  <id>http://liu1084.github.io/</id>
+  <author>
+    <name><![CDATA[Jim liu]]></name>
+    <email><![CDATA[liu1084@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[linux/shell/How to Using `shift`?]]></title>
+    <link href="http://liu1084.github.io/blog/2016/05/16/linux-slash-shell-slash-how-to-using-shift/"/>
+    <updated>2016-05-16T11:14:47+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/05/16/linux-slash-shell-slash-how-to-using-shift</id>
+    <content type="html"><![CDATA[<p>Shell编程中Shift的用法</p>
+
+<ul>
+<li><p>位置参数可以用shift命令左移。
+比如shift 3表示原来的$4现在变成$1，原来的$5现在变成$2等等，原来的$1、$2、$3丢弃，$0不移动。</p></li>
+<li><p>不带参数的shift命令相当于shift 1。</p></li>
+<li><p>当 Shell 程序不知道其个数时，可以把所有参数一起赋值给变量$*。若用户要求 Shell 在不知道位置变量个数的情况下，还能逐个的把参数一一处理，也就是在 $1 后为 $2,在 $2 后面为 $3 等。在 shift 命令执行前变量 $1 的值在 shift 命令执行后就不可用了。</p></li>
+<li><p>Shift 命令还有另外一个重要用途, Bsh 定义了9个位置变量，从 $1 到 $9,这并不意味着用户在命令行只能使用9个参数，借助 shift 命令可以访问多于9个的参数。Shift 命令一次移动参数的个数由其所带的参数指定。例如当 shell 程序处理完前九个命令行参数后，可以使用 shift 9 命令把 $10 移到 $1。</p></li>
+</ul>
+
+
+<p>示例如下：</p>
+
+<pre><code>#测试 shift 命令(x_shift.sh)
+until [ $# -eq 0 ]
+do
+echo "第一个参数为: $1 参数个数为: $#"
+shift
+done
+执行以上程序x_shift.sh：
+$./x_shift.sh 1 2 3 4
+</code></pre>
+
+<p>结果显示如下：</p>
+
+<pre><code>第一个参数为: 1 参数个数为: 4
+第一个参数为: 2 参数个数为: 3
+第一个参数为: 3 参数个数为: 2
+第一个参数为: 4 参数个数为: 1
+</code></pre>
+
+<p>从上可知 shift 命令每执行一次，变量的个数($#)减一，而变量值提前一位，下面代码用 until 和 shift 命令计算所有命令行参数的和。</p>
+
+<pre><code>#shift 上档命令的应用(x_shift2.sh)
+if [ $# -eq 0 ]
+then
+echo "Usage:x_shift2.sh 参数"
+exit 1
+fi
+sum=0
+until [ $# -eq 0 ]
+do
+sum=`expr $sum + $1`
+shift
+done
+echo "sum is: $sum"
+</code></pre>
+
+<p>执行上述程序:</p>
+
+<pre><code>$x_shift2.sh 10 20 15
+</code></pre>
+
+<p>其显示结果为：</p>
+
+<pre><code>45
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Linux/shell/display Debug Info on Running a Shell]]></title>
+    <link href="http://liu1084.github.io/blog/2016/05/13/linux-slash-shell-slash-display-debug-info-on-running-a-shell/"/>
+    <updated>2016-05-13T14:16:18+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/05/13/linux-slash-shell-slash-display-debug-info-on-running-a-shell</id>
+    <content type="html"><![CDATA[<h1>!/bin/sh</h1>
+
+<p>set -x</p>
+
+<h1>shell body &hellip; as below</h1>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Linux/shell/eval Command How To]]></title>
+    <link href="http://liu1084.github.io/blog/2016/05/13/linux-slash-shell-slash-eval-command-how-to/"/>
+    <updated>2016-05-13T14:13:07+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/05/13/linux-slash-shell-slash-eval-command-how-to</id>
+    <content type="html"><![CDATA[<ol>
+<li>eval command-line
+其中command－line是在终端上键入的一条普通命令行。然而当在它前面放上eval时，其结果是shell在执行命令行之前扫描它两次。如：
+pipe=&ldquo;|&rdquo;
+eval ls $pipe wc -l
+shell第1次扫描命令行时，它替换出pipe的值｜，接着eval使它再次扫描命令行，这时shell把｜作为管道符号了。
+如果变量中包含任何需要shell直接在命令行中看到的字符（不是替换的结果），就可以使用eval。命令行结束符（； ｜ &amp;），I／o重定向符（&lt; >）和引号就属于对shell具有特殊意义的符号，必须直接出现在命令行中。</li>
+<li>eval echo \$$# 取得最后一个参数
+如：cat last
+eval echo \$$#
+./last one two three four
+four
+第一遍扫描后，shell把反斜杠去掉了。当shell再次扫描该行时，它替换了$4的值，并执行echo命令
+3.以下示意如何用eval命令创建指向变量的“指针”：
+x=100
+ptrx=x
+eval echo \$$ptrx 指向ptrx，用这里的方法可以理解b中的例子
+100 打印100
+eval $ptrx=50 将50存到ptrx指向的变量中。
+echo $x
+50 打印50</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[linux/shell/What Is Meaning of $?]]></title>
+    <link href="http://liu1084.github.io/blog/2016/05/13/linux-slash-shell-slash-what-is-meaning-of-$/"/>
+    <updated>2016-05-13T14:10:43+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/05/13/linux-slash-shell-slash-what-is-meaning-of-$</id>
+    <content type="html"><![CDATA[<p>linux中shell变量$#,$@,$0,$1,$2的含义解释:
+变量说明:
+$$
+Shell本身的PID（ProcessID）
+$!
+Shell最后运行的后台Process的PID
+$?
+最后运行的命令的结束代码（返回值）
+$-
+使用Set命令设定的Flag一览
+$<em>
+所有参数列表。如"$</em>&ldquo;用「"」括起来的情况、以&rdquo;$1 $2 … $n"的形式输出所有参数。
+$@
+所有参数列表。如"$@&ldquo;用「"」括起来的情况、以&rdquo;$1" &ldquo;$2&rdquo; … &ldquo;$n&rdquo; 的形式输出所有参数。
+$#
+添加到Shell的参数个数
+$0
+Shell本身的文件名
+$1～$n
+添加到Shell的各参数值。$1是第1参数、$2是第2参数…。</p>
+
+<p>示例：</p>
+
+<p>1 #!/bin/bash
+2 #
+3 printf &ldquo;The complete list is %s\n&rdquo; &ldquo;$$&rdquo;
+4 printf &ldquo;The complete list is %s\n&rdquo; &ldquo;$!&rdquo;
+5 printf &ldquo;The complete list is %s\n&rdquo; &ldquo;$?&rdquo;
+6 printf &ldquo;The complete list is %s\n&rdquo; &ldquo;$*&rdquo;
+7 printf &ldquo;The complete list is %s\n&rdquo; &ldquo;$@&rdquo;
+8 printf &ldquo;The complete list is %s\n&rdquo; &ldquo;$#&rdquo;
+9 printf &ldquo;The complete list is %s\n&rdquo; &ldquo;$0&rdquo;
+10 printf &ldquo;The complete list is %s\n&rdquo; &ldquo;$1&rdquo;
+11 printf &ldquo;The complete list is %s\n&rdquo; &ldquo;$2
+结果：</p>
+
+<p>[Aric@localhost ~]$ bash params.sh 123456 QQ
+The complete list is 24249
+The complete list is
+The complete list is 0
+The complete list is 123456 QQ
+The complete list is 123456
+The complete list is QQ
+The complete list is 2
+The complete list is params.sh
+The complete list is 123456
+The complete list is QQ
+Have a nice day!!!</p>
+]]></content>
+  </entry>
+  
+</feed>
