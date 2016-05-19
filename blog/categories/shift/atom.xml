@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Shift | Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/blog/categories/shift/atom.xml" rel="self"/>
+  <link href="http://liu1084.github.io/"/>
+  <updated>2016-05-20T03:25:12+08:00</updated>
+  <id>http://liu1084.github.io/</id>
+  <author>
+    <name><![CDATA[Jim liu]]></name>
+    <email><![CDATA[liu1084@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[linux/shell/How to Using `shift`?]]></title>
+    <link href="http://liu1084.github.io/blog/2016/05/16/linux-slash-shell-slash-how-to-using-shift/"/>
+    <updated>2016-05-16T11:14:47+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/05/16/linux-slash-shell-slash-how-to-using-shift</id>
+    <content type="html"><![CDATA[<p>Shell编程中Shift的用法</p>
+
+<ul>
+<li><p>位置参数可以用shift命令左移。
+比如shift 3表示原来的$4现在变成$1，原来的$5现在变成$2等等，原来的$1、$2、$3丢弃，$0不移动。</p></li>
+<li><p>不带参数的shift命令相当于shift 1。</p></li>
+<li><p>当 Shell 程序不知道其个数时，可以把所有参数一起赋值给变量$*。若用户要求 Shell 在不知道位置变量个数的情况下，还能逐个的把参数一一处理，也就是在 $1 后为 $2,在 $2 后面为 $3 等。在 shift 命令执行前变量 $1 的值在 shift 命令执行后就不可用了。</p></li>
+<li><p>Shift 命令还有另外一个重要用途, Bsh 定义了9个位置变量，从 $1 到 $9,这并不意味着用户在命令行只能使用9个参数，借助 shift 命令可以访问多于9个的参数。Shift 命令一次移动参数的个数由其所带的参数指定。例如当 shell 程序处理完前九个命令行参数后，可以使用 shift 9 命令把 $10 移到 $1。</p></li>
+</ul>
+
+
+<p>示例如下：</p>
+
+<pre><code>#测试 shift 命令(x_shift.sh)
+until [ $# -eq 0 ]
+do
+echo "第一个参数为: $1 参数个数为: $#"
+shift
+done
+执行以上程序x_shift.sh：
+$./x_shift.sh 1 2 3 4
+</code></pre>
+
+<p>结果显示如下：</p>
+
+<pre><code>第一个参数为: 1 参数个数为: 4
+第一个参数为: 2 参数个数为: 3
+第一个参数为: 3 参数个数为: 2
+第一个参数为: 4 参数个数为: 1
+</code></pre>
+
+<p>从上可知 shift 命令每执行一次，变量的个数($#)减一，而变量值提前一位，下面代码用 until 和 shift 命令计算所有命令行参数的和。</p>
+
+<pre><code>#shift 上档命令的应用(x_shift2.sh)
+if [ $# -eq 0 ]
+then
+echo "Usage:x_shift2.sh 参数"
+exit 1
+fi
+sum=0
+until [ $# -eq 0 ]
+do
+sum=`expr $sum + $1`
+shift
+done
+echo "sum is: $sum"
+</code></pre>
+
+<p>执行上述程序:</p>
+
+<pre><code>$x_shift2.sh 10 20 15
+</code></pre>
+
+<p>其显示结果为：</p>
+
+<pre><code>45
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

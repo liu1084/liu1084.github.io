@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Mobile Technology | Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/blog/categories/mobile-technology/atom.xml" rel="self"/>
+  <link href="http://liu1084.github.io/"/>
+  <updated>2016-05-20T03:25:12+08:00</updated>
+  <id>http://liu1084.github.io/</id>
+  <author>
+    <name><![CDATA[Jim liu]]></name>
+    <email><![CDATA[liu1084@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[How to Flash Nexus 5 on Android 6.0.1]]></title>
+    <link href="http://liu1084.github.io/?p=4"/>
+    <updated>2015-12-23T06:38:05+08:00</updated>
+    <id>http://liu1084.github.io/how-to-flash-and-root-nexus-5-on-android-6-0-1</id>
+    <content type="html"><![CDATA[<p>Google 已经发布了android OS 6.0，我的Nexus5还在跑4.0。今天决定把n5升级到6.0，作为新手机使用。</p>
+
+<ol>
+<li>download &#8220;hammerhead-mmb29k-factory-1943f0f5.tgz&#8221; for Nexus 5 (GSM/LTE) on <a href="https://developers.google.com/android/nexus/images" target="_blank"><a href="https://developers.google.com/android/nexus/images">https://developers.google.com/android/nexus/images</a><img class="alignnone wp-image-28" src="http://www.83096146.com/blog/wp-content/uploads/2015/12/QQ截图20151225020648-300x248.png" alt="QQ截图20151225020648" width="300" height="248" srcset="http://blog.83096146.com/wp-content/uploads/2015/12/QQ截图20151225020648-300x248.png 300w, http://blog.83096146.com/wp-content/uploads/2015/12/QQ截图20151225020648-768x635.png 768w, http://blog.83096146.com/wp-content/uploads/2015/12/QQ截图20151225020648.png 870w" sizes="(max-width: 300px) 100vw, 300px" /></a></li>
+<li>download android SDK (ADK) and install it, update sdk platform-tools , BE SURE HAVE fastboot.exe &amp; adb.exe in platform-tools directory.<img class="alignnone size-medium wp-image-33" src="http://www.83096146.com/blog/wp-content/uploads/2015/12/QQ截图20151225023148-300x214.png" alt="QQ截图20151225023148" width="300" height="214" srcset="http://blog.83096146.com/wp-content/uploads/2015/12/QQ截图20151225023148-300x214.png 300w, http://blog.83096146.com/wp-content/uploads/2015/12/QQ截图20151225023148.png 700w" sizes="(max-width: 300px) 100vw, 300px" /></li>
+<li>decompress hammerhead-mmb29k-factory-1943f0f5.tgz and place it in platforms directory</li>
+<li></li>
+<li>reboot your mobile phone &amp; restart it PRESS VOLUME DOWN + POWER KEYS TOGETHER.</li>
+<li>connnect phone to your pc and open &#8220;usb debug&#8221; option</li>
+<li>run &#8220;flash-all.bat&#8221; file on a console, waiting for a memont (About 40mins)&#8230; reboot autometicly itself</li>
+<li>a new mobile phone done, enjoy it.</li>
+<li><img class="alignleft wp-image-29" src="http://www.83096146.com/blog/wp-content/uploads/2015/12/webwxgetmsgimg.jpg" alt="webwxgetmsgimg" width="320" height="569" /></li>
+</ol>
+
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+]]></content>
+  </entry>
+  
+</feed>

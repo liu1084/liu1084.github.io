@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Command | Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/blog/categories/command/atom.xml" rel="self"/>
+  <link href="http://liu1084.github.io/"/>
+  <updated>2016-05-20T03:25:12+08:00</updated>
+  <id>http://liu1084.github.io/</id>
+  <author>
+    <name><![CDATA[Jim liu]]></name>
+    <email><![CDATA[liu1084@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Db/mongo/command-list]]></title>
+    <link href="http://liu1084.github.io/blog/2016/04/14/db-slash-mongo-slash-command-list/"/>
+    <updated>2016-04-14T00:14:51+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/04/14/db-slash-mongo-slash-command-list</id>
+    <content type="html"><![CDATA[<h1>MongoDB commands</h1>
+
+<ol>
+<li><p>insert - insert <code>a object</code> or <code>a object array</code> to collection.</p>
+
+<p> <strong>command:</strong>
+ <pre>db.getCollection(&lsquo;collectionName&rsquo;).insert(object);</pre></p>
+
+<p> <strong>example:</strong>
+ <pre>
+ db.collection.insert(object);
+ db.collection.insert([object]);
+ var MAXNUMBER = 1000000;
+ var items = [];
+ for (var i = 0; i &lt; MAXNUMBER; i++){
+     var item = {id: i, value: Math.random() * 100 + 1}
+     items.push(item);
+ }
+ db.getCollection(&lsquo;blog&rsquo;).insert(items);
+ </pre></p></li>
+<li><p>remove</p>
+
+<ul>
+<li><p>remove all data
+<pre>
+db.collection.remove({});
+</pre></p></li>
+<li><p>remove data by conditions
+<pre>
+db.collection.remove({id: {$lg: 3} });
+</pre></p></li>
+<li>drop a collection
+<pre>
+db.collection.drop();
+</pre></li>
+</ul>
+</li>
+<li><p>update</p>
+
+<p> <strong>command</strong>
+ <pre>db.getCollection(&lsquo;collectionName&rsquo;).update({condition}, {object});</pre></p>
+
+<p> <strong>examples</strong></p>
+
+<ul>
+<li>doc replace
+<pre>
+var oldItem = db.blog.findOne({&ldquo;id&rdquo;: 0}); //note: findOne, not find or find().limit(1)
+oldItem.bit = {id: oldItem.id, value: oldItem.value};
+delete oldItem._id;
+delete oldItem.id;
+delete oldItem.value;
+db.getCollection(&lsquo;blog&rsquo;).update({id: 0}, oldItem);
+db.blog.findOne({&ldquo;bit.id&rdquo;: 0});
+</pre></li>
+<li>update values
+
+<ul>
+<li>using updaters
+
+<ol>
+<li><p>$inc - 数值修改器，支持整数和浮点数，对于数据类型，无法操作</p>
+
+<p> <strong>command</strong>
+  <pre>{&lsquo;$inc&rsquo;: {fieldName: increament value}}</pre></p>
+
+<p>  <strong>example</strong>
+  <pre>
+  var item = db.getCollection(&lsquo;blog&rsquo;).findOne({&lsquo;bit.id&rsquo;: 200});
+  print(item);</p>
+
+<p>  //upper
+  db.getCollection(&lsquo;blog&rsquo;).update({&lsquo;bit.id&rsquo;: 200}, {&lsquo;$inc&rsquo;: {&lsquo;bit.id&rsquo;: 1}});
+  db.getCollection(&lsquo;blog&rsquo;).find({&lsquo;bit.id&rsquo;: 201});</p>
+
+<p>  //downner
+  db.getCollection(&lsquo;blog&rsquo;).update({&lsquo;bit.id&rsquo;: 201}, {&lsquo;$inc&rsquo;:{&lsquo;bit.id&rsquo;: -1}})
+  db.getCollection(&lsquo;blog&rsquo;).find({&lsquo;bit.id&rsquo;: 200});</p>
+
+<p>  db.getCollection(&lsquo;blog&rsquo;).update({&lsquo;bit.id&rsquo;: 200}, {&lsquo;$inc&rsquo;:{&lsquo;bit.id&rsquo;: -.5}})
+  db.getCollection(&lsquo;blog&rsquo;).find({&lsquo;bit.id&rsquo;: 199.5})
+  </pre></p></li>
+<li><p>$set - 根据key设置值修改器， 如果key不存在，就新建并且赋值</p>
+
+<p> <strong>comman</strong>
+  <pre>{&lsquo;$set&rsquo;: {key: value}}</pre>
+  <strong>example</strong>
+  <pre>
+  //修改值
+  db.getCollection(&lsquo;blog&rsquo;).update({&lsquo;bit.id&rsquo;: 199.5}, {&lsquo;$set&rsquo;:{&lsquo;bit.id&rsquo;: -.5}});
+  db.getCollection(&lsquo;blog&rsquo;).find({&lsquo;bit.id&rsquo;: -.5});</p>
+
+<p>  //添加新的key和相应的值
+  db.getCollection(&lsquo;blog&rsquo;).update({&lsquo;bit.id&rsquo;: -.5}, {&lsquo;$set&rsquo;:{&lsquo;bit.foo&rsquo;: .5}})；
+  db.getCollection(&lsquo;blog&rsquo;).find({&lsquo;bit.foo&rsquo;: .5})</p>
+
+<p>  //修改值的类型
+  db.getCollection(&lsquo;blog&rsquo;).update({&lsquo;bit.foo&rsquo;: .5}, {&lsquo;$set&rsquo;:{&lsquo;bit.foo&rsquo;: [.1, .2, .5]}});
+  db.getCollection(&lsquo;blog&rsquo;).find({&lsquo;bit.foo&rsquo;: [.1, .2, .5]});
+  </pre></p></li>
+<li><p>$push/$ne/$pop/$pull/$each/$addToSet - 数组修改器</p>
+
+<p> <strong>command</strong>
+  <pre>
+  //$push会把key对应的value放在以key为键的数组中
+  //如果key不存在，就新建，否则在存在的键对应的数组里，把value追加到数组的最后面
+  {&lsquo;$push&rsquo;: {key: value}}
+  //数组中的某个key不包含value值的
+  {key: {&lsquo;$ne&rsquo;: value}}
+  //把value添加到以key为键的数组中，并做重复判断
+  {&lsquo;$addToSet&rsquo;: {key: value}}</p>
+
+<p>  //将多条记录遍历并不重复的插入数组
+  {&lsquo;$addToSet&rsquo;: {key: {&lsquo;$each&rsquo;: [objects]}}}</p>
+
+<p>  //从数组的尾部或者头部删除一个对象
+  {&lsquo;$pop&rsquo;: {key: 1}}
+  {&lsquo;$pop&rsquo;: {key: -1}}
+  </pre></p>
+
+<p>  <strong>example</strong>
+  <pre>
+  db.getCollection(&lsquo;blog&rsquo;).insert({
+      title: &lsquo;a post title&rsquo;,
+      content: &lsquo;a good post&rsquo;,
+      name: &lsquo;Jim&rsquo;
+  });</p>
+
+<p>  //add first comment
+  db.getCollection(&lsquo;blog&rsquo;).update(
+      {
+          title: &lsquo;a post title&rsquo;
+      },
+      {
+          &lsquo;$push&rsquo;: {
+          &lsquo;comments&rsquo;: {
+              name: &lsquo;Joe&rsquo;,
+              content: &lsquo;no good&rsquo;
+          }}
+      }
+  );
+  //add second comment
+  db.getCollection(&lsquo;blog&rsquo;).update(
+      {
+          title: &lsquo;a post title&rsquo;
+      },
+      {
+          &lsquo;$push&rsquo;: {
+          &lsquo;comments&rsquo;: {
+              name: &lsquo;Joe2&rsquo;,
+              content: &lsquo;no good2&rsquo;
+          }}
+      }
+  );
+  </pre></p>
+
+<p>  <pre>
+  //因为coments数组的第一个元素的content确实包含‘no good’这个值，所以结果应该是0
+  db.getCollection(&lsquo;blog&rsquo;).find({&lsquo;comments.content&rsquo;: {&lsquo;$ne&rsquo;: &lsquo;no good&rsquo;}});</p>
+
+<p>  </pre></p>
+
+<p>  <pre>
+  //$addToSet和$push不同，它在将对象存入数组的时候，会进行重复性检查
+  //对于数组中不能有重复元素的情形，比较适合，当然效率肯定比$push差一些
+  db.getCollection(&lsquo;blog&rsquo;).update(
+      {
+          title: &lsquo;a post title&rsquo;
+      },
+      {
+          &lsquo;$addToSet&rsquo;: {
+                  &lsquo;comments&rsquo;: {
+                          name: &lsquo;Joe&rsquo;,
+                          content: &lsquo;no good&rsquo;
+                  }
+          }
+      }
+  );
+  </pre></p>
+
+<p>  <pre>
+  db.getCollection(&lsquo;blog&rsquo;)
+      .update(
+          {
+              title: &lsquo;a post title&rsquo;
+          },
+          {
+              &lsquo;$addToSet&rsquo;: {
+                  comments: {
+                          &lsquo;$each&rsquo;: [
+                              {name: &lsquo;lee&rsquo;, content: &lsquo;good&rsquo;},
+                              {name: &lsquo;less&rsquo;, content: &lsquo;good&rsquo;},
+                              {name: &lsquo;lee&rsquo;, content: &lsquo;bye&rsquo;},
+                              {name: &lsquo;lee&rsquo;, content: &lsquo;good&rsquo;}
+                          ]</p>
+
+<pre><code>                  }
+           }
+      }
+</code></pre>
+
+<p>  )
+  </pre>
+  <pre>
+  //从头部删除一个元素
+  db.getCollection(&lsquo;blog&rsquo;).update({}, {&lsquo;$pop&rsquo;: {comments: -1}});
+  //从尾部删除一个元素
+  db.getCollection(&lsquo;blog&rsquo;).update({}, {&lsquo;$pop&rsquo;: {comments: 1}});
+  </pre></p></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>find</li>
+<li><p>check BSON size</p>
+
+<p> Object.bsonsize(object);//Current Max size is 16MB</p></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>

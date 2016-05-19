@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Tools | Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/blog/categories/tools/atom.xml" rel="self"/>
+  <link href="http://liu1084.github.io/"/>
+  <updated>2016-05-20T03:25:12+08:00</updated>
+  <id>http://liu1084.github.io/</id>
+  <author>
+    <name><![CDATA[Jim liu]]></name>
+    <email><![CDATA[liu1084@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[What&#8217;s the HTTP Benchmark Tools?]]></title>
+    <link href="http://liu1084.github.io/?p=245"/>
+    <updated>2016-03-18T23:19:52+08:00</updated>
+    <id>http://liu1084.github.io/whats-the-http-benchmark-tools</id>
+    <content type="html"><![CDATA[<p>Did&nbsp;you want to make a benchmark&nbsp;for your production application which is running on server Before release&nbsp;online?</p>
+
+<p>There are many tools for your selection:</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;">
+  <tr>
+    <td>
+      No.
+    </td>
+    
+    <td>
+      Tools Name
+    </td>
+  </tr>
+  
+  <tr>
+    <td>
+      1
+    </td>
+    
+    <td>
+      Apache's AB
+    </td>
+  </tr>
+  
+  <tr>
+    <td>
+      2
+    </td>
+    
+    <td>
+      Lighttpd's Weighttp
+    </td>
+  </tr>
+  
+  <tr>
+    <td>
+      3
+    </td>
+    
+    <td>
+      HTTPerf
+    </td>
+  </tr>
+  
+  <tr>
+    <td>
+      4
+    </td>
+    
+    <td>
+      Nginx's "wrk"
+    </td>
+  </tr>
+</table>
+
+
+<p>How to using them?</p>
+
+<p>&nbsp;</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Eclipse Keymap for Sublime Text 3]]></title>
+    <link href="http://liu1084.github.io/?p=19"/>
+    <updated>2015-12-25T09:04:22+08:00</updated>
+    <id>http://liu1084.github.io/eclipse-keymap-for-sublime-text-3</id>
+    <content type="html"><![CDATA[<ul>
+<li>Preferences-> Key binds &#8212; User</li>
+<li>Copy &amp; paste (<a href="https://gist.github.com/thbkrkr/3194275">https://gist.github.com/thbkrkr/3194275</a>)</li>
+</ul>
+
+
+<pre class="theme:dark-terminal width-mode:1 width:600 top-set:false bottom-set:false lang:js decode:true  " title="short key">[
+{ "keys": ["f12"], "command": "htmlprettify"},
+{ "keys": ["f1"], "command": "fold" },
+{ "keys": ["f2"], "command": "unfold" },
+{ "keys": ["ctrl+à"], "command": "show_overlay", "args": {"overlay": "goto", "text": "@"} },
+{ "keys": ["ctrl+!"], "command": "show_overlay", "args": {"overlay": "goto", "text": ":"} },
+{ "keys": ["ctrl+space"], "command": "auto_complete" },
+{ "keys": ["ctrl+space"], "command": "replace_completion_with_auto_complete", "context":
+[
+{ "key": "last_command", "operator": "equal", "operand": "insert_best_completion" },
+{ "key": "auto_complete_visible", "operator": "equal", "operand": false },
+{ "key": "setting.tab_completion", "operator": "equal", "operand": true }
+]
+},
+{ "keys": ["ctrl+d"], "command": "run_macro_file", "args": {"file": "Packages/Default/Delete Line.sublime-macro"} },
+{ "keys": ["ctrl+shift+c"], "command": "toggle_comment", "args": { "block": false } },
+{ "keys": ["ctrl+shift+c"], "command": "toggle_comment", "args": { "block": true } },
+{ "keys": ["ctrl+shift+f"], "command": "reindent" , "args": {"single_line": false}},
+{ "keys": ["ctrl+shift+s"], "command": "save_all" },
+{ "keys": ["alt+up"], "command": "swap_line_up" },
+{ "keys": ["alt+down"], "command": "swap_line_down" },
+{ "keys": ["ctrl+alt+j"], "command": "join_lines" },
+{ "keys": ["ctrl+alt+down"], "command": "duplicate_line" },
+{ "keys": ["shift+ctrl+r"], "command": "show_overlay", "args": {"overlay": "goto", "show_files": true} },
+{ "keys": ["shift+ctrl+f4"], "command": "close_all" },
+{ "keys": ["shift+ctrl+y"], "command": "lower_case" },
+{ "keys": ["shift+ctrl+x"], "command": "upper_case" }
+]</pre>
+
+
+<p>close &amp; restart sublime text, enjoy it!</p>
+]]></content>
+  </entry>
+  
+</feed>

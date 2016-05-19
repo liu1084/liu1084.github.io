@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Boot | Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/blog/categories/boot/atom.xml" rel="self"/>
+  <link href="http://liu1084.github.io/"/>
+  <updated>2016-05-20T03:25:12+08:00</updated>
+  <id>http://liu1084.github.io/</id>
+  <author>
+    <name><![CDATA[Jim liu]]></name>
+    <email><![CDATA[liu1084@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[java/springboot/How to Render a Html/jsp View in Springboot?]]></title>
+    <link href="http://liu1084.github.io/blog/2016/05/19/java-slash-springboot-slash-how-to-render-a-html-slash-jsp-view-in-springboot/"/>
+    <updated>2016-05-19T23:38:11+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/05/19/java-slash-springboot-slash-how-to-render-a-html-slash-jsp-view-in-springboot</id>
+    <content type="html"><![CDATA[<p>If you want to render a view in your controller, which is resolver with thymeleaf.
+- add dependencies - edit pom.xml, add:</p>
+
+<pre><code>&lt;!--thymeleaf view&gt; --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.thymeleaf&lt;/groupId&gt;
+    &lt;artifactId&gt;thymeleaf-spring4&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<ul>
+<li><p>add templateResolver - open your spring config file, add:</p>
+
+<pre><code>  &lt;bean id="templateResolver"
+    class="org.thymeleaf.templateresolver.ServletContextTemplateResolver"&gt;
+      &lt;property name="prefix" value="/templates/"/&gt;
+      &lt;property name="templateMode" value="HTML5"/&gt;
+  &lt;/bean&gt;
+</code></pre></li>
+<li><p>add file to resources folder - in console:</p>
+
+<pre><code>  cd resources
+  mkdir -p templates
+  cd templates &amp;&amp; mkdir layouts common
+  touch index.html
+</code></pre></li>
+<li><p>add xmlns:th=&ldquo;<a href="http://www.thymeleaf.org">http://www.thymeleaf.org</a>&rdquo; - edit index.html:</p>
+
+<pre><code>  &lt;!DOCTYPE html&gt;
+  &lt;html lang="en" xmlns:th="http://www.thymeleaf.org"&gt;
+  &lt;head&gt;
+      &lt;meta charset="UTF-8"/&gt;
+      &lt;title&gt;index&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+  this is dashboard.
+  &lt;/body&gt;
+  &lt;/html&gt;
+</code></pre></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

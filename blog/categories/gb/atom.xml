@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Gb | Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/blog/categories/gb/atom.xml" rel="self"/>
+  <link href="http://liu1084.github.io/"/>
+  <updated>2016-05-20T03:25:12+08:00</updated>
+  <id>http://liu1084.github.io/</id>
+  <author>
+    <name><![CDATA[Jim liu]]></name>
+    <email><![CDATA[liu1084@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Others/the Difference Between Bit]]></title>
+    <link href="http://liu1084.github.io/blog/2016/04/14/others-slash-the-difference-between-bit/"/>
+    <updated>2016-04-14T00:40:34+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/04/14/others-slash-the-difference-between-bit</id>
+    <content type="html"><![CDATA[<h1>What is the diff of bit, byte, kb, mb, gb and so on?</h1>
+
+<ul>
+<li><p>Bit - A bit is a value of either a 1 or 0(on or off)</p></li>
+<li><p>Nibble - A nibble is 4 bit</p></li>
+<li>Byte - A byte is 8 bit</li>
+<li>Kilobyte(KB) - 1kb is 1,024 bytes</li>
+<li>Megabyte(MB) - 1mb is 1,024 kb</li>
+<li>Gigabyte(GB) - 1gb is 1,024 mb</li>
+<li>Terabyte(TB) - 1tb is 1,024 gb</li>
+<li>Petabyte(PB) - 1pb is 1,024 tb</li>
+<li>Exabyte(EB) - 1eb is 1,024 pb</li>
+<li>Zettabyte(ZB) - 1zb is 1,024 eb</li>
+<li>Yottabyte(YB) - 1yb is 1,024 zb</li>
+</ul>
+
+
+<p>future:</p>
+
+<ul>
+<li>Hellabyte(HB)</li>
+<li>Brontobyte(BB)</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

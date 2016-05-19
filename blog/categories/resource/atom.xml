@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Resource | Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/blog/categories/resource/atom.xml" rel="self"/>
+  <link href="http://liu1084.github.io/"/>
+  <updated>2016-05-20T03:25:12+08:00</updated>
+  <id>http://liu1084.github.io/</id>
+  <author>
+    <name><![CDATA[Jim liu]]></name>
+    <email><![CDATA[liu1084@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[java/springboot/How to Access Static Resource in Springboot?]]></title>
+    <link href="http://liu1084.github.io/blog/2016/05/20/java-slash-springboot-slash-how-to-access-static-resource-in-springboot/"/>
+    <updated>2016-05-20T01:44:17+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/05/20/java-slash-springboot-slash-how-to-access-static-resource-in-springboot</id>
+    <content type="html"><![CDATA[<ul>
+<li><p>Add &lt;mvc:resources mapping=&ldquo;&rdquo; location=&ldquo;&rdquo; /> to project config
+edit your project config file(eg:spring.xml)</p>
+
+<p>  &hellip;</p>
+
+<p>  <!-- It means: If client access /static/..., spring will look them under
+      ServletContext resource [/static/],  OR
+      class path resource [META-INF/resources/static/],   OR
+      class path resource [resources/statstatic/ic],   OR
+      class path resource [static/static/],   OR
+      class path resource [public/static/],   OR
+      class path resource [static/]
+   --></p>
+
+<p>   &lt;mvc:resources mapping=&ldquo;/static/**&rdquo; location=&ldquo;classpath:/static/&rdquo;/></p></li>
+<li><p>Add @ImportResource to main class</p>
+
+<pre><code>  @SpringBootApplication
+  ...
+  @ImportResource({"captcha.xml"})
+  ...
+</code></pre></li>
+<li><p>Add your static resource to forlder &amp; copy it to rources forlder</p>
+
+<pre><code>  copy your static resource(eg: CSS/JS/SCSS ...) to one of any folders
+</code></pre></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Web, | Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/blog/categories/web/atom.xml" rel="self"/>
+  <link href="http://liu1084.github.io/"/>
+  <updated>2016-05-20T03:25:12+08:00</updated>
+  <id>http://liu1084.github.io/</id>
+  <author>
+    <name><![CDATA[Jim liu]]></name>
+    <email><![CDATA[liu1084@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[java/jetty/Config Jetty in Intellj Idea IDE]]></title>
+    <link href="http://liu1084.github.io/blog/2016/05/15/java-slash-jetty-slash-config-jetty-in-intellj-idea-ide/"/>
+    <updated>2016-05-15T13:44:13+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/05/15/java-slash-jetty-slash-config-jetty-in-intellj-idea-ide</id>
+    <content type="html"><![CDATA[<ul>
+<li>install jetty plugin for intellj idea: IDEA jetty RUNNER</li>
+<li>download <a href="http://download.eclipse.org/jetty/stable-9/dist/jetty-distribution-9.3.8.v20160314.tar.gz">jetty 9.3</a> from eclipse.com/jetty &amp; unzip it to d:\http\jetty9.3</li>
+<li>create springmvc project with template using intellj idea</li>
+<li><p>edit pom.xml file &amp; add jetty support for your project :</p>
+
+<p>  <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>9.3.8.v20160314</version>
+  </dependency></p>
+
+<p>  <!-- http://mvnrepository.com/artifact/org.eclipse.jetty/jetty-util -->
+  <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-util</artifactId>
+      <version>9.3.8.v20160314</version>
+  </dependency></p>
+
+<p>  <!-- http://mvnrepository.com/artifact/org.eclipse.jetty/jetty-servlet -->
+  <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-servlet</artifactId>
+      <version>9.3.8.v20160314</version>
+  </dependency></p>
+
+<p>  <!-- http://mvnrepository.com/artifact/org.eclipse.jetty/jetty-webapp -->
+  <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-webapp</artifactId>
+      <version>9.3.8.v20160314</version>
+  </dependency></p></li>
+<li><p>edit run configure &amp; add jetty runner</p></li>
+<li>add jsp support</li>
+<li>open project structure</li>
+<li><p>add global libs from jetty 9.3 lib -> apache-jsp</p></li>
+<li><p>start jetty runner &amp; open your webapp in browser.</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

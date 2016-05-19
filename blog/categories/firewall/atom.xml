@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Firewall, | Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/blog/categories/firewall/atom.xml" rel="self"/>
+  <link href="http://liu1084.github.io/"/>
+  <updated>2016-05-20T03:25:12+08:00</updated>
+  <id>http://liu1084.github.io/</id>
+  <author>
+    <name><![CDATA[Jim liu]]></name>
+    <email><![CDATA[liu1084@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Linux/firewall/ufw]]></title>
+    <link href="http://liu1084.github.io/blog/2016/05/19/linux-slash-firewall-slash-ufw/"/>
+    <updated>2016-05-19T22:27:33+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/05/19/linux-slash-firewall-slash-ufw</id>
+    <content type="html"><![CDATA[<p>Introduction
+For an introduction to firewalls, please see Firewall.</p>
+
+<p>UFW - Uncomplicated Firewall
+The default firewall configuration tool for Ubuntu is ufw. Developed to ease iptables firewall configuration, ufw provides a user friendly way to create an IPv4 or IPv6 host-based firewall. By default UFW is disabled.</p>
+
+<p>Gufw is a GUI that is available as a frontend.</p>
+
+<p>Basic Syntax and Examples
+Default rules are fine for the average home user
+When you turn UFW on, it uses a default set of rules (profile) that should be fine for the average home user. That&rsquo;s at least the goal of the Ubuntu developers. In short, all &lsquo;incoming&rsquo; is being denied, with some exceptions to make things easier for home users.</p>
+
+<p>Enable and Disable
+Enable UFW</p>
+
+<p>To turn UFW on with the default set of rules:</p>
+
+<p>sudo ufw enable
+To check the status of UFW:</p>
+
+<p>sudo ufw status verbose
+The output should be like this:</p>
+
+<p>youruser@yourcomputer:~$ sudo ufw status verbose
+[sudo] password for youruser:
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing)
+New profiles: skip
+youruser@yourcomputer:~$
+Note that by default, deny is being applied to incoming. There are exceptions, which can be found in the output of this command:</p>
+
+<p>sudo ufw show raw
+You can also read the rules files in /etc/ufw (the files whose names end with .rules).</p>
+
+<p>Disable UFW</p>
+
+<p>To disable ufw use:</p>
+
+<p>sudo ufw disable
+Allow and Deny (specific rules)
+Allow</p>
+
+<p>sudo ufw allow <port>/&lt;optional: protocol>
+example: To allow incoming tcp and udp packet on port 53</p>
+
+<p>sudo ufw allow 53
+example: To allow incoming tcp packets on port 53</p>
+
+<p>sudo ufw allow 53/tcp
+example: To allow incoming udp packets on port 53</p>
+
+<p>sudo ufw allow 53/udp
+Deny</p>
+
+<p>sudo ufw deny <port>/&lt;optional: protocol>
+example: To deny tcp and udp packets on port 53</p>
+
+<p>sudo ufw deny 53
+example: To deny incoming tcp packets on port 53</p>
+
+<p>sudo ufw deny 53/tcp
+example: To deny incoming udp packets on port 53</p>
+
+<p>sudo ufw deny 53/udp
+Delete Existing Rule
+To delete a rule, simply prefix the original rule with delete. For example, if the original rule was:</p>
+
+<p>ufw deny 80/tcp
+Use this to delete it:</p>
+
+<p>sudo ufw delete deny 80/tcp
+Services
+You can also allow or deny by service name since ufw reads from /etc/services To see get a list of services:</p>
+
+<p>less /etc/services
+Allow by Service Name</p>
+
+<p>sudo ufw allow <service name>
+example: to allow ssh by name</p>
+
+<p>sudo ufw allow ssh
+Deny by Service Name</p>
+
+<p>sudo ufw deny <service name>
+example: to deny ssh by name</p>
+
+<p>sudo ufw deny ssh
+Status
+IconsPage/important.png Checking the status of ufw will tell you if ufw is enabled or disabled and also list the current ufw rules that are applied to your iptables.</p>
+
+<p>To check the status of ufw:</p>
+
+<p>sudo ufw status</p>
+
+<p>Firewall loaded</p>
+
+<p>To                         Action  From</p>
+
+<hr />
+
+<p>22:tcp                     DENY    192.168.0.1
+22:udp                     DENY    192.168.0.1
+22:tcp                     DENY    192.168.0.7
+22:udp                     DENY    192.168.0.7
+22:tcp                     ALLOW   192.168.0.0/24
+22:udp                     ALLOW   192.168.0.0/24
+if ufw was not enabled the output would be:</p>
+
+<p>sudo ufw status
+Status: inactive
+Logging
+To enable logging use:</p>
+
+<p>sudo ufw logging on
+To disable logging use:</p>
+
+<p>sudo ufw logging off
+Advanced Syntax
+You can also use a fuller syntax, specifying the source and destination addresses, ports and protocols.</p>
+
+<p>Allow Access
+This section shows how to allow specific access.</p>
+
+<p>Allow by Specific IP</p>
+
+<p>sudo ufw allow from <ip address>
+example:To allow packets from 207.46.232.182:</p>
+
+<p>sudo ufw allow from 207.46.232.182
+Allow by Subnet</p>
+
+<p>You may use a net mask :</p>
+
+<p>sudo ufw allow from 192.168.1.0/24
+Allow by specific port and IP address</p>
+
+<p>sudo ufw allow from <target> to <destination> port <port number>
+example: allow IP address 192.168.0.4 access to port 22 for all protocols</p>
+
+<p>sudo ufw allow from 192.168.0.4 to any port 22
+Allow by specific port, IP address and protocol</p>
+
+<p>sudo ufw allow from <target> to <destination> port <port number> proto <protocol name>
+example: allow IP address 192.168.0.4 access to port 22 using TCP</p>
+
+<p>sudo ufw allow from 192.168.0.4 to any port 22 proto tcp
+Enable PING</p>
+
+<p>Note: Security by obscurity may be of very little actual benefit with modern cracker scripts. By default, UFW allows ping requests. You may find you wish to leave (icmp) ping requests enabled to diagnose networking problems.</p>
+
+<p>In order to disable ping (icmp) requests, you need to edit /etc/ufw/before.rules and remove the following lines:</p>
+
+<h1>ok icmp codes</h1>
+
+<p>-A ufw-before-input -p icmp &ndash;icmp-type destination-unreachable -j ACCEPT
+-A ufw-before-input -p icmp &ndash;icmp-type source-quench -j ACCEPT
+-A ufw-before-input -p icmp &ndash;icmp-type time-exceeded -j ACCEPT
+-A ufw-before-input -p icmp &ndash;icmp-type parameter-problem -j ACCEPT
+-A ufw-before-input -p icmp &ndash;icmp-type echo-request -j ACCEPT
+or change the &ldquo;ACCEPT&rdquo; to &ldquo;DROP&rdquo;</p>
+
+<h1>ok icmp codes</h1>
+
+<p>-A ufw-before-input -p icmp &ndash;icmp-type destination-unreachable -j DROP
+-A ufw-before-input -p icmp &ndash;icmp-type source-quench -j DROP
+-A ufw-before-input -p icmp &ndash;icmp-type time-exceeded -j DROP
+-A ufw-before-input -p icmp &ndash;icmp-type parameter-problem -j DROP
+-A ufw-before-input -p icmp &ndash;icmp-type echo-request -j DROP
+Deny Access
+Deny by specific IP</p>
+
+<p>sudo ufw deny from <ip address>
+example:To block packets from 207.46.232.182:</p>
+
+<p>sudo ufw deny from 207.46.232.182
+Deny by specific port and IP address</p>
+
+<p>sudo ufw deny from <ip address> to <protocol> port <port number>
+example: deny ip address 192.168.0.1 access to port 22 for all protocols</p>
+
+<p>sudo ufw deny from 192.168.0.1 to any port 22
+Working with numbered rules
+Listing rules with a reference number</p>
+
+<p>You may use status numbered to show the order and id number of rules:</p>
+
+<p>sudo ufw status numbered
+Editing numbered rules
+Delete numbered rule</p>
+
+<p>You may then delete rules using the number. This will delete the first rule and rules will shift up to fill in the list.</p>
+
+<p>sudo ufw delete 1
+Insert numbered rule</p>
+
+<p>sudo ufw insert 1 allow from <ip address>
+Advanced Example
+Scenario: You want to block access to port 22 from 192.168.0.1 and 192.168.0.7 but allow all other 192.168.0.x IPs to have access to port 22 using tcp</p>
+
+<p>sudo ufw deny from 192.168.0.1 to any port 22
+sudo ufw deny from 192.168.0.7 to any port 22
+sudo ufw allow from 192.168.0.0/24 to any port 22 proto tcp
+IconsPage/important.png This puts the specific rules first and the generic second. Once a rule is matched the others will not be evaluated (see manual below) so you must put the specific rules first. As rules change you may need to delete old rules to ensure that new rules are put in the proper order.</p>
+
+<p>To check your rules orders you can check the status; for the scenario the output below is the desired output for the rules to work properly</p>
+
+<p>sudo ufw status
+Firewall loaded</p>
+
+<p>To                         Action  From</p>
+
+<hr />
+
+<p>22:tcp                     DENY    192.168.0.1
+22:udp                     DENY    192.168.0.1
+22:tcp                     DENY    192.168.0.7
+22:udp                     DENY    192.168.0.7
+22:tcp                     ALLOW   192.168.0.0/24
+Scenario change: You want to block access to port 22 to 192.168.0.3 as well as 192.168.0.1 and 192.168.0.7.</p>
+
+<p>sudo ufw delete allow from 192.168.0.0/24 to any port 22
+sudo ufw status
+Firewall loaded</p>
+
+<p>To                         Action  From</p>
+
+<hr />
+
+<p>22:tcp                     DENY    192.168.0.1
+22:udp                     DENY    192.168.0.1
+22:tcp                     DENY    192.168.0.7
+22:udp                     DENY    192.168.0.7</p>
+
+<p>sudo ufw deny 192.168.0.3 to any port 22
+sudo ufw allow 192.168.0.0/24 to any port 22 proto tcp
+sudo ufw status</p>
+
+<p>Firewall loaded</p>
+
+<p>To                         Action  From</p>
+
+<hr />
+
+<p>22:tcp                     DENY    192.168.0.1
+22:udp                     DENY    192.168.0.1
+22:tcp                     DENY    192.168.0.7
+22:udp                     DENY    192.168.0.7
+22:tcp                     DENY    192.168.0.3
+22:udp                     DENY    192.168.0.3
+22:tcp                     ALLOW   192.168.0.0/24
+IconsPage/important.png If you simply add the deny rule the allow would have been above it and been applied instead of the deny</p>
+
+<p>Interpreting Log Entries
+Based on the response to the post UFW log guide/tutorial ?.</p>
+
+<p>The SPT and DPT values, along with SRC and DST values, will typically be the values you’ll focus on when analysing the firewall logs.</p>
+
+<p>Psuedo Log Entry</p>
+
+<p>Feb  4 23:33:37 hostname kernel: [ 3529.289825] [UFW BLOCK] IN=eth0 OUT= MAC=00:11:22:33:44:55:66:77:88:99:aa:bb:cc:dd SRC=444.333.222.111 DST=111.222.333.444 LEN=103 TOS=0x00 PREC=0x00 TTL=52 ID=0 DF PROTO=UDP SPT=53 DPT=36427 LEN=83
+Date</p>
+
+<p>It&rsquo;s good practice to watch the dates and times. If things are out of order or blocks of time are missing then an attacker probably messed with your logs.</p>
+
+<p>Hostname</p>
+
+<p>The server’s hostname</p>
+
+<p>Uptime</p>
+
+<p>The time in seconds since boot.</p>
+
+<p>Logged Event</p>
+
+<p>Short description of the logged event; e.g. [UFW BLOCK]</p>
+
+<p>IN</p>
+
+<p>If set, then the event was an incoming event.</p>
+
+<p>OUT</p>
+
+<p>If set, then the event was an outgoing event.</p>
+
+<p>MAC</p>
+
+<p>This provides a 14-byte combination of the Destination MAC, Source MAC, and EtherType fields, following the order found in the Ethernet II header. See Ethernet frame and EtherType for more information.</p>
+
+<p>SRC</p>
+
+<p>This indicates the source IP, who sent the packet initially. Some IPs are routable over the internet, some will only communicate over a LAN, and some will only route back to the source computer. See IP address for more information.</p>
+
+<p>DST</p>
+
+<p>This indicates the destination IP, who is meant to receive the packet. You can use whois.net or the cli whois to determine the owner of the IP address.</p>
+
+<p>LEN</p>
+
+<p>This indicates the length of the packet.</p>
+
+<p>TOS</p>
+
+<p>I believe this refers to the TOS field of the IPv4 header. See TCP Processing of the IPv4 Precedence Field for more information.</p>
+
+<p>PREC</p>
+
+<p>I believe this refers to the Precedence field of the IPv4 header.</p>
+
+<p>TTL</p>
+
+<p>This indicates the “Time to live” for the packet. Basically each packet will only bounce through the given number of routers before it dies and disappears. If it hasn’t found its destination before the TTL expires, then the packet will evaporate. This field keeps lost packets from clogging the internet forever. See Time to live for more information.</p>
+
+<p>ID</p>
+
+<p>Not sure what this one is, but it&rsquo;s not really important for reading logs. It might be ufw’s internal ID system, it might be the operating system’s ID.</p>
+
+<p>PROTO</p>
+
+<p>This indicates the protocol of the packet - TCP or UDP. See TCP and UDP Ports Explained for more information.</p>
+
+<p>SPT</p>
+
+<p>This indicates the source. I believe this is the port, which the SRC IP sent the IP packet over. See List of TCP and UDP port numbers for more information.</p>
+
+<p>DPT</p>
+
+<p>This indicates the destination port. I believe this is the port, which the SRC IP sent its IP packet to, expecting a service to be running on this port.</p>
+
+<p>WINDOW</p>
+
+<p>This indicates the size of packet the sender is willing to receive.</p>
+
+<p>RES</p>
+
+<p>This bit is reserved for future use &amp; is always set to 0. Basically it’s irrelevant for log reading purposes.</p>
+
+<p>SYN URGP</p>
+
+<p>SYN indicates that this connection requires a three-way handshake, which is typical of TCP connections. URGP indicates whether the urgent pointer field is relevant. 0 means it&rsquo;s not. Doesn’t really matter for firewall log reading.</p>
+]]></content>
+  </entry>
+  
+</feed>
