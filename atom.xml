@@ -1,0 +1,956 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Jim's Blog]]></title>
+  <link href="http://liu1084.github.io/atom.xml" rel="self"/>
+  <link href="http://liu1084.github.io/"/>
+  <updated>2016-04-05T12:42:48+08:00</updated>
+  <id>http://liu1084.github.io/</id>
+  <author>
+    <name><![CDATA[Jim liu]]></name>
+    <email><![CDATA[liu1084@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Other/emeditor 15.8.4 Serial Number]]></title>
+    <link href="http://liu1084.github.io/blog/2016/04/05/other-slash-emeditor-15-dot-8-4-serial-number/"/>
+    <updated>2016-04-05T12:41:11+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/04/05/other-slash-emeditor-15-dot-8-4-serial-number</id>
+    <content type="html"><![CDATA[<p>姓 名:ttrar.com
+序 列:号:DKAZQ-R9TYP-5SM2A-9Z8KD-3E2RK</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Test/karma]]></title>
+    <link href="http://liu1084.github.io/blog/2016/04/05/test-slash-karma/"/>
+    <updated>2016-04-05T00:12:36+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/04/05/test-slash-karma</id>
+    <content type="html"><![CDATA[<h1>Karma &amp; jasmine &amp; istanbul</h1>
+
+<h3>Karma - 是node平台的自动化测试管理工具（Test Runner）</h3>
+
+<h4>特点</h4>
+
+<ul>
+<li>该工具可用于测试所有主流web浏览器</li>
+<li>可以集成到CI（持续集成）工具</li>
+<li>可以和其他代码编辑器一起使用</li>
+<li>可以监控文件的变化，一旦监控中的文件发生改变，自动完成测试</li>
+</ul>
+
+
+<h4>使用</h4>
+
+<ul>
+<li><p>安装angular &amp; angular-mocks</p>
+
+<p>  npm install angular angular-mocks &ndash;save-dev</p></li>
+<li><p>安装karma &amp; jasmine &amp; jasmine-cli &amp; karma-jasmine &amp; jasmine-core</p>
+
+<p>  npm install karma &ndash;save-dev
+  npm install jasmine &ndash;save-dev
+  npm install -g karma-cli
+  npm install karma-jasmine &ndash;save-dev
+  npm install jasmine-core &ndash;save -dev</p></li>
+<li><p>初始化karma，生产karma.conf.js</p>
+
+<p>  karma init &ndash;> next &ndash;> next &hellip;</p></li>
+<li><p>修改karma.conf.js</p></li>
+</ul>
+
+
+<p>添加plugins到karma.conf.js中</p>
+
+<pre><code>// list of karma plugins
+plugins: [
+    'karma-jasmine',
+    'karma-chrome-launcher'
+],
+</code></pre>
+
+<p>指定进行测试的文件</p>
+
+<pre><code>// list of files / patterns to load in the browser
+files: [
+        'node_modules/angular/angular.js',
+        'node_modules/angular-resource/angular-resource.js',
+        'node_modules/angular-mocks/angular-mocks.js',
+        'src/main.js',
+        'src/q/Person.js',
+        'test/**/*.js'
+],
+</code></pre>
+
+<p>数组里面保护的文件，实际上就相当于html里面要包含哪些js（以及其依赖）一样，把需要测试的文件引入以后，测试文件依赖的文件（Person.js, main.js, angular*.js等都需要保护在其之前）</p>
+
+<p>main.js &ndash; 定义全局的模块名称</p>
+
+<p>Person.js &ndash; 一个工厂类</p>
+
+<pre><code>ScrumModule.factory('User', ['$log', function($log, name){
+    var Person = function(name){
+        this.eat = function(food){
+            $log.info(name + ' is eating delicious ' + food);
+        };
+        this.beHungry = function(reason){
+            $log.info(name + ' is hungry, because ' + reason);
+        };
+    };
+    return Person;
+}]);
+</code></pre>
+
+<p>PersonTest.js &ndash; 用于测试工厂类的单元测试文件</p>
+
+<pre><code>it('should illustrate basic usage of $q', function () {
+
+    var scope, q, http, resource, user, UserFactory;
+    beforeEach(angular.mock.module('Scrum'));
+    beforeEach(angular.mock.inject(function ($rootScope, $http, $resource, $q, User) {
+        scope = $rootScope.$new();
+    }));
+
+
+    var pizzaOrderFulfillment = $q.defer();
+    var pizzaDelivered = pizzaOrderFulfillment.promise;
+
+    user = new UserFactory('Pawel');
+    pizzaDelivered.then(user.eat, user.beHungry);
+    pizzaOrderFulfillment.resolve('101');
+    scope.$digest();
+
+    it('pawel will eat pizza', function () {
+        except($log.info.logs).toContain(['Pawel is eating delicious 101']);
+    });
+});
+</code></pre>
+
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8jasmine%E7%BC%96%E5%86%99%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81">使用jasmine编写测试代码</a></li>
+<li><p>启动karma对测试代码进行测试</p>
+
+<p>  karma start karma.conf.js</p></li>
+</ul>
+
+
+<h3>jasmine - 是node平台单元测试框架（类似JUnit）</h3>
+
+<h4>特点</h4>
+
+<ul>
+<li>行为测试（BDD）</li>
+<li>编写JavaScript测试的框架</li>
+<li>不依赖于任何其他库</li>
+</ul>
+
+
+<h4>代码结构</h4>
+
+<pre><code>describe("A suite", function() {
+  var foo;
+  beforeEach(function() {
+    foo = 0;
+    foo += 1;
+  });
+
+  afterEach(function() {
+    foo = 0;
+  });
+
+  it("contains spec with an expectation", function() {
+    expect(true).toBe(true);
+  });
+});
+</code></pre>
+
+<p>每个测试都在一个测试集中运行，Suite就是一个测试集，用describe函数封装。 Spec表示每个测试用例，用it函数封装。通过expect函数，作为程序断言来判断相等关系。setup过程用beforeEach函数封装，tearDown过程用afterEach封装。</p>
+
+<h4>使用jasmine编写测试代码<a name="使用jasmine编写测试代码"></a></h4>
+
+<h3>istanbul - 是一个单元测试代码覆盖率检查工具，可以很直观地告诉我们，单元测试对代码的控制程度。</h3>
+
+<h4>使用</h4>
+
+<ul>
+<li><p>安装karma-coverage</p>
+
+<p>  npm install karma-coverage &ndash;save-dev</p></li>
+<li><p>修改karma.conf.js</p>
+
+<p>  reporters: [&lsquo;progress&rsquo;,&lsquo;coverage&rsquo;],
+  preprocessors : {&lsquo;src.js&rsquo;: &lsquo;coverage&rsquo;},
+  coverageReporter: {
+      type : &lsquo;html&rsquo;,
+      dir : &lsquo;coverage/&rsquo;
+  }</p></li>
+<li><p>查看测试覆盖率报告</p></li>
+</ul>
+
+
+<p>在文件夹coverage下，有index.html文件，打开即可。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Angular/how to Write Service and Inheritance]]></title>
+    <link href="http://liu1084.github.io/blog/2016/03/30/angular-slash-how-to-write-service-and-inheritance/"/>
+    <updated>2016-03-30T10:00:16+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/03/30/angular-slash-how-to-write-service-and-inheritance</id>
+    <content type="html"><![CDATA[<h2>AngularJS Inheritance</h2>
+
+<p>angular本身不提供内建的继承机制，所以如果你需要继承方式开发一组应用，或者你需要在开源项目上进行二次开发，这也需要重新封装原有的服务和指令。</p>
+
+<p>我这里提供了以下几种情况进行说明。</p>
+
+<h1>1. 控制器的继承</h1>
+
+<p>实际上，你写一个angular的控制器，因为在控制器里面的方法和变量，都写在$scope下，所以，这些变量和方法在其他控制器里面本来也是可以访问的（当然，在调用之前，必须先定义）。</p>
+
+<p>考虑以下的场景：
+如果你有2个页面，虽然显示的样式不同，但是内部的逻辑非常相似（50%以上），那么你就可以把共通的逻辑写在父类里面，然后子类去继承父类，从而重用父类方法。</p>
+
+<h6>在angular中，如何去实现呢？</h6>
+
+<p>采用经典的原型链方式和angularjs中的<code>as</code>语法就可以。看下面的例子：</p>
+
+<h6>BaseCtrl.js</h6>
+
+<pre><code>var BaseCtrl = function($scope){
+    this.id = 0;
+    this.count = 0;
+};
+
+//common methods
+BaseCtrl.prototype.parentMethod1 = function(){
+    console.log('parent controller 2, method 1');
+};
+//...another methods
+</code></pre>
+
+<h6>ChildrenCtrl.js</h6>
+
+<pre><code>var ChildrenCtrl = function(){
+    BaseCtrl.call(this);
+};
+
+ChildrenCtrl.prototype = Object.create(BaseCtrl.prototype);
+ChildrenCtrl.prototype.childMethod1 = function(){
+    this.parentMethod1();
+    console.log('i call parent method1');
+};
+
+angular.module('InheritanceModule').controller('BaseCtrl', BaseCtrl);
+angular.module('InheritanceModule').controller('ChildrenCtrl', ChildrenCtrl);
+</code></pre>
+
+<h6>HTML</h6>
+
+<pre><code>&lt;div ng-controller="BaseCtrl as base"&gt;
+    &lt;button ng-click="base.parentMethod1();"&gt;base ctrl&lt;/button&gt;
+    &lt;div ng-controller="ChildrenCtrl as child"&gt;
+        &lt;button ng-click="child.childMethod1();"&gt;children ctrl&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<h1>2. service的继承</h1>
+
+<p>通常，angularjs常用的封装服务的方式有service、factory和provider等5种方式。service和factory这两种方式的差异不是很大，provider方式是在调用之前可以进行配置，这3种方式最重要，也最常用。下面分别进行举例说明：</p>
+
+<ul>
+<li>factory 返回一个对象</li>
+</ul>
+
+
+<h6>factory 实例</h6>
+
+<pre><code>app.factory('myParentFactory', [function(){
+    var privateVariable = '';
+    var privateFunction = function(){
+
+    };
+
+    var result = {};
+
+    result.publicFunction = function(){
+        return privateVariable;
+    };
+
+    result.publicVariable = function(){
+        return privateFunction();
+    };
+
+    return result;
+}]);
+
+app.controller('AppCtrl1', ['$scope', 'myParentFactory', function($scope, myParentFactory){
+    $scope.callFunction = myParentFactory.publicFunction();
+    $scope.callVariable = myParentFactory.publicVariable();
+}]);
+
+
+app.factory('myChildFactory', ['myParentFactory', function(myParentFactory){
+    var child = Object.create(myParentFactory);
+    child.childMethod = function(){
+
+    };
+
+    return child;
+}]);
+
+//OR
+
+app.service('myChildFactory', ['myParentFactory', function(myParentFactory){
+    var child = angular.extend(myParentFactory, {});
+    child.childMethod = function(){
+        //body
+    };
+}]);
+
+app.controller('AppCtrl11', ['$scope', 'myChildFactory', function($scope, myChildFactory){
+    $scope.callFunction = myChildFactory.publicFunction();
+    $scope.callVariable = myChildFactory.publicVariable();
+    $scope.childFunction = myChildFactory.childMethod();
+}]);
+</code></pre>
+
+<ul>
+<li>service 不用写返回语句，实际上返回一个构造器</li>
+</ul>
+
+
+<h6>service 实例</h6>
+
+<pre><code>app.service('myParentService', [function(){
+    var privateVariable = '';
+    var privateFunction = function(){
+
+    };
+
+    this.publicFunction = function(){
+        return privateVariable;
+    };
+
+    this.publicVariable = function(){
+        return privateFunction();
+    };
+}]);
+
+app.controller('AppCtrl2', ['$scope', 'myParentService', function($scope, myParentService){
+    $scope.callFunction = myParentService.publicFunction();
+    $scope.callVariable = myParentService.publicVariable();
+}]);
+</code></pre>
+
+<h6>service的继承有点不太一样，因为service不需要有返回，但是如果你写上，好像也没什么</h6>
+
+<pre><code>app.service('myChildService', ['myParentService', function(myParentService){
+    return Object.create(myParentService);
+}]);
+</code></pre>
+
+<ul>
+<li>directive 分为2部分： 配置阶段和运行阶段</li>
+</ul>
+
+
+<h6>运行阶段</h6>
+
+<pre><code>app
+.provider('Press', [function () {
+    var config = {
+        name: 'Beijing',
+        address: '',
+        author: ''
+    };
+    var pressName = '';
+
+    return {
+        //可配置部分
+        setConfig: function(name, address, author){
+            config.name = name;
+            config.address = address;
+            config.author = author;
+        },
+        //返回的部分
+        $get: function(){
+            return {
+                setPress: function (press) {
+                    config.name = press;
+                },
+                getPress: function () {
+                    return config.name;
+                },
+                configPress: pressName
+            }
+        }
+    };
+}]);
+</code></pre>
+
+<h6>配置阶段</h6>
+
+<pre><code>app.config(function(myDirectiveProvider){
+    myDirectiveProvider.setConfig(args);
+})
+
+app.controller('AppCtrl3', ['Press', function(Press){
+    Press.setPress(variables);
+    //...
+}]);
+</code></pre>
+
+<h6>扩展provider</h6>
+
+<pre><code>app.provider('ChildPress', ['PressProvider', function(PressProvider){
+    return PressProvider.get(); //OR
+    return PressProvider.get
+}]);
+</code></pre>
+
+<h6>另外一个例子，我觉得这个例子配置方面有代表性</h6>
+
+<pre><code>var app = angular.module('myApp', []);
+
+// Provide some basic injectables for testing
+app.constant('nameString', 'NAME');
+app.constant('ageString', 'AGE');
+app.constant('foodString', 'FAVORITE FOOD');
+
+// Create the dialog provider
+app.provider('dialog', function($provide, $injector) {
+    var dialogs = {};
+
+    this.register = function(name, configFn) {
+        // Create a new service
+        $provide.factory(name, function($window, $q) {
+            dialogs[name] = function() {
+                // Get data based on DI injected version of configFn
+                var data = $injector.invoke(configFn);
+                // faking async here since prompt is really synchronous
+                var deferred = $q.defer();
+                var response = $window.prompt(data.text);
+                deferred.resolve(response);
+                return deferred.promise;
+            };
+            return dialogs[name];
+        });
+    };
+
+    // Injecting the service itself gives you a function that
+    // allows you to access a dialog by name, much like $filter
+    this.$get = function() {
+        return function(name) {
+            return dialogs[name];
+        };
+    };
+});
+
+// Providing dialog injectables via app.config
+app.config(function(dialogProvider) {
+    dialogProvider.register('askFood', function(foodString) {
+        return {
+            text: 'What is your ' + foodString + '?'
+        }
+    });
+});
+
+// Alternatively, shortcut to accessing the dialogProvider via app.dialog
+app.dialog = function(name, configFn) {
+    app.config(function(dialogProvider) {
+        dialogProvider.register(name, configFn);
+    });
+};
+
+app.dialog('askName', function(nameString) {
+    return {
+        text: 'What is your ' + nameString + '?'
+    }
+});
+
+app.dialog('askAge', function(ageString) {
+    return {
+        text: 'What is your ' + ageString + '?'
+    }
+});
+
+app.controller('MainController',
+    function($scope, askName, askAge, askFood, dialog) {
+        var setLastResponse = function(result) {
+            $scope.lastResponse = result;
+        };
+
+        $scope.askName = function() {
+            askName().then(setLastResponse);
+        };
+
+        $scope.askNameAgain = function() {
+            // get the dialog through the dialog service
+            // much like how $filter works
+            var theDialog = dialog('askName');
+            theDialog().then(setLastResponse);
+        };
+
+        $scope.askAge = function() {
+            askAge().then(setLastResponse);
+        };
+
+        $scope.askFood = function() {
+            askFood().then(setLastResponse);
+        };
+    });    
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Angular/how to Write Service and Inheritance ?]]></title>
+    <link href="http://liu1084.github.io/blog/2016/03/28/angular-slash-how-to-write-service-and-inheritance/"/>
+    <updated>2016-03-28T19:58:12+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/03/28/angular-slash-how-to-write-service-and-inheritance</id>
+    <content type="html"><![CDATA[<h2>AngularJS Inheritance</h2>
+
+<p>angular本身不提供内建的继承机制，所以如果你需要继承方式开发一组应用，或者你需要在开源项目上进行二次开发，这也需要重新封装原有的服务和指令。</p>
+
+<p>我这里提供了以下几种情况进行说明。</p>
+
+<h1>1. 控制器的继承</h1>
+
+<p>实际上，你写一个angular的控制器，因为在控制器里面的方法和变量，都写在$scope下，所以，这些变量和方法在其他控制器里面本来也是可以访问的（当然，在调用之前，必须先定义）。</p>
+
+<p>考虑以下的场景：
+如果你有2个页面，虽然显示的样式不同，但是内部的逻辑非常相似（50%以上），那么你就可以把共通的逻辑写在父类里面，然后子类去继承父类，从而重用父类方法。</p>
+
+<h6>在angular中，如何去实现呢？</h6>
+
+<p>采用经典的原型链方式和angularjs中的<code>as</code>语法就可以。看下面的例子：</p>
+
+<h6>BaseCtrl.js</h6>
+
+<pre><code>var BaseCtrl = function($scope){
+    this.id = 0;
+    this.count = 0;
+};
+
+//common methods
+BaseCtrl.prototype.parentMethod1 = function(){
+    console.log('parent controller 2, method 1');
+};
+//...another methods
+</code></pre>
+
+<h6>ChildrenCtrl.js</h6>
+
+<pre><code>var ChildrenCtrl = function(){
+    BaseCtrl.call(this);
+};
+
+ChildrenCtrl.prototype = Object.create(BaseCtrl.prototype);
+ChildrenCtrl.prototype.childMethod1 = function(){
+    this.parentMethod1();
+    console.log('i call parent method1');
+};
+
+angular.module('InheritanceModule').controller('BaseCtrl', BaseCtrl);
+angular.module('InheritanceModule').controller('ChildrenCtrl', ChildrenCtrl);
+</code></pre>
+
+<h6>HTML</h6>
+
+<pre><code>&lt;div ng-controller="BaseCtrl as base"&gt;
+    &lt;button ng-click="base.parentMethod1();"&gt;base ctrl&lt;/button&gt;
+    &lt;div ng-controller="ChildrenCtrl as child"&gt;
+        &lt;button ng-click="child.childMethod1();"&gt;children ctrl&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<h1>2. service的继承</h1>
+
+<p>通常，angularjs常用的封装服务的方式有service、factory和provider等5种方式。service和factory这两种方式的差异不是很大，provider方式是在调用之前可以进行配置，这3种方式最重要，也最常用。下面分别进行举例说明：</p>
+
+<ul>
+<li>factory 返回一个对象</li>
+</ul>
+
+
+<h6>factory 实例</h6>
+
+<pre><code>app.factory('myParentFactory', [function(){
+    var privateVariable = '';
+    var privateFunction = function(){
+
+    };
+
+    var result = {};
+
+    result.publicFunction = function(){
+        return privateVariable;
+    };
+
+    result.publicVariable = function(){
+        return privateFunction();
+    };
+
+    return result;
+}]);
+
+app.controller('AppCtrl1', ['$scope', 'myParentFactory', function($scope, myParentFactory){
+    $scope.callFunction = myParentFactory.publicFunction();
+    $scope.callVariable = myParentFactory.publicVariable();
+}]);
+
+
+app.factory('myChildFactory', ['myParentFactory', function(myParentFactory){
+    var child = Object.create(myParentFactory);
+    child.childMethod = function(){
+
+    };
+
+    return child;
+}]);
+
+//OR
+
+app.service('myChildFactory', ['myParentFactory', function(myParentFactory){
+    var child = angular.extend(myParentFactory, {});
+    child.childMethod = function(){
+        //body
+    };
+}]);
+
+app.controller('AppCtrl11', ['$scope', 'myChildFactory', function($scope, myChildFactory){
+    $scope.callFunction = myChildFactory.publicFunction();
+    $scope.callVariable = myChildFactory.publicVariable();
+    $scope.childFunction = myChildFactory.childMethod();
+}]);
+</code></pre>
+
+<ul>
+<li>service 不用写返回语句，实际上返回一个构造器</li>
+</ul>
+
+
+<h6>service 实例</h6>
+
+<pre><code>app.service('myParentService', [function(){
+    var privateVariable = '';
+    var privateFunction = function(){
+
+    };
+
+    this.publicFunction = function(){
+        return privateVariable;
+    };
+
+    this.publicVariable = function(){
+        return privateFunction();
+    };
+}]);
+
+app.controller('AppCtrl2', ['$scope', 'myParentService', function($scope, myParentService){
+    $scope.callFunction = myParentService.publicFunction();
+    $scope.callVariable = myParentService.publicVariable();
+}]);
+</code></pre>
+
+<h6>service的继承有点不太一样，因为service不需要有返回，但是如果你写上，好像也没什么</h6>
+
+<pre><code>app.service('myChildService', ['myParentService', function(myParentService){
+    return Object.create(myParentService);
+}]);
+</code></pre>
+
+<ul>
+<li>directive 分为2部分： 配置阶段和运行阶段</li>
+</ul>
+
+
+<h6>运行阶段</h6>
+
+<pre><code>app
+.provider('Press', [function () {
+    var config = {
+        name: 'Beijing',
+        address: '',
+        author: ''
+    };
+    var pressName = '';
+
+    return {
+        //可配置部分
+        setConfig: function(name, address, author){
+            config.name = name;
+            config.address = address;
+            config.author = author;
+        },
+        //返回的部分
+        $get: function(){
+            return {
+                setPress: function (press) {
+                    config.name = press;
+                },
+                getPress: function () {
+                    return config.name;
+                },
+                configPress: pressName
+            }
+        }
+    };
+}]);
+</code></pre>
+
+<h6>配置阶段</h6>
+
+<pre><code>app.config(function(myDirectiveProvider){
+    myDirectiveProvider.setConfig(args);
+})
+
+app.controller('AppCtrl3', ['Press', function(Press){
+    Press.setPress(variables);
+    //...
+}]);
+</code></pre>
+
+<h6>扩展provider</h6>
+
+<pre><code>app.provider('ChildPress', ['PressProvider', function(PressProvider){
+    return PressProvider.get(); //OR
+    return PressProvider.get
+}]);
+</code></pre>
+
+<h6>另外一个例子，我觉得这个例子配置方面有代表性</h6>
+
+<pre><code>var app = angular.module('myApp', []);
+
+// Provide some basic injectables for testing
+app.constant('nameString', 'NAME');
+app.constant('ageString', 'AGE');
+app.constant('foodString', 'FAVORITE FOOD');
+
+// Create the dialog provider
+app.provider('dialog', function($provide, $injector) {
+    var dialogs = {};
+
+    this.register = function(name, configFn) {
+        // Create a new service
+        $provide.factory(name, function($window, $q) {
+            dialogs[name] = function() {
+                // Get data based on DI injected version of configFn
+                var data = $injector.invoke(configFn);
+                // faking async here since prompt is really synchronous
+                var deferred = $q.defer();
+                var response = $window.prompt(data.text);
+                deferred.resolve(response);
+                return deferred.promise;
+            };
+            return dialogs[name];
+        });
+    };
+
+    // Injecting the service itself gives you a function that
+    // allows you to access a dialog by name, much like $filter
+    this.$get = function() {
+        return function(name) {
+            return dialogs[name];
+        };
+    };
+});
+
+// Providing dialog injectables via app.config
+app.config(function(dialogProvider) {
+    dialogProvider.register('askFood', function(foodString) {
+        return {
+            text: 'What is your ' + foodString + '?'
+        }
+    });
+});
+
+// Alternatively, shortcut to accessing the dialogProvider via app.dialog
+app.dialog = function(name, configFn) {
+    app.config(function(dialogProvider) {
+        dialogProvider.register(name, configFn);
+    });
+};
+
+app.dialog('askName', function(nameString) {
+    return {
+        text: 'What is your ' + nameString + '?'
+    }
+});
+
+app.dialog('askAge', function(ageString) {
+    return {
+        text: 'What is your ' + ageString + '?'
+    }
+});
+
+app.controller('MainController',
+    function($scope, askName, askAge, askFood, dialog) {
+        var setLastResponse = function(result) {
+            $scope.lastResponse = result;
+        };
+
+        $scope.askName = function() {
+            askName().then(setLastResponse);
+        };
+
+        $scope.askNameAgain = function() {
+            // get the dialog through the dialog service
+            // much like how $filter works
+            var theDialog = dialog('askName');
+            theDialog().then(setLastResponse);
+        };
+
+        $scope.askAge = function() {
+            askAge().then(setLastResponse);
+        };
+
+        $scope.askFood = function() {
+            askFood().then(setLastResponse);
+        };
+    });    
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Github Slash How to Make a Blog With Jelly on Github Dot Com Under Window 7]]></title>
+    <link href="http://liu1084.github.io/blog/2016/03/25/github-slash-how-to-make-a-blog-with-jelly-on-github-dot-com-under-window-7/"/>
+    <updated>2016-03-25T00:00:00+08:00</updated>
+    <id>http://liu1084.github.io/blog/2016/03/25/github-slash-how-to-make-a-blog-with-jelly-on-github-dot-com-under-window-7</id>
+    <content type="html"><![CDATA[<hr />
+
+<p>layout: post
+title: &ldquo;github/how to make a blog with octopress on github.com&rdquo;
+date: 2016-03-25 12:56:05 +0800
+comments: true</p>
+
+<h2>categories: [octopress, blog, github.com, github pages]</h2>
+
+<h2>There are 10 steps todo:</h2>
+
+<ul>
+<li><strong>Step 1: Install ruby, git and nodejs</strong></li>
+</ul>
+
+
+<h6>download</h6>
+
+<ol>
+<li>ruby</li>
+<li>git</li>
+<li>nodejs</li>
+</ol>
+
+
+<p>Install them step-by-step.</p>
+
+<ul>
+<li><strong>Step 2: Install ruby DEVELOPMENT KIT</strong></li>
+</ul>
+
+
+<h6>download &amp; install dev-kit of ruby</h6>
+
+<ol>
+<li>goto <a href="http://rubyinstaller.org/downloads/" title="ruby websit">http://rubyinstaller.org/downloads/</a> download</li>
+<li><p>install it.</p></li>
+<li><p><strong>Step 3: Clone octopress to local</strong></p></li>
+</ol>
+
+
+<h6>open cmd console, and press:</h6>
+
+<pre><code>git clone git://github.com/imathis/octopress.git octopress
+cd octopress
+</code></pre>
+
+<ul>
+<li><strong>Step 4: Install packages using gem</strong></li>
+</ul>
+
+
+<h6>install dependiencis, switch to development kit bin forlder, and open a console by run <code>msys.bat</code>, press(if u open console using system <code>cmd</code>, errors will be shown like this: &ldquo;Unknown tag &lsquo;include_array&rsquo; in index.html&rdquo;):</h6>
+
+<pre><code>gem install bundler
+bundle install
+rake install
+</code></pre>
+
+<ul>
+<li><strong>Step 5: Writing a post with markdown</strong></li>
+</ul>
+
+
+<h6>open forlder in your IDE(such as Sublime text 3 or Eclipse) &amp; under console press</h6>
+
+<pre><code>rake new_post['forlder/post-title']
+</code></pre>
+
+<p>this command will create a file which name is <code>YYYY-MM-DD-post-title.markdown</code> under <code>source/_posts</code> forder.</p>
+
+<p>you can edit this <code>markdown</code> file and save it.</p>
+
+<ul>
+<li><strong>Step 6: Preview pages on localhost</strong></li>
+</ul>
+
+
+<h6>generate static html from markdown</h6>
+
+<pre><code>rake generate
+rake preview
+</code></pre>
+
+<h6>if you want to edit sass file, you cant run</h6>
+
+<pre><code>rake watch
+</code></pre>
+
+<p>to watch file changes and compile <code>scss</code> to <code>css</code> real-time.</p>
+
+<ul>
+<li><strong>Step 7: Add CNAME to your DNS resolve</strong></li>
+</ul>
+
+
+<h6>if you have a domain(For example: page.domainname.com), and want to resolve your github page to it. you can add a CNAME to your DNS resolve recored &amp; add CNAME file to source forlder like this:</h6>
+
+<pre><code>echo "page.domainname.com" &gt;&gt; source/CNAME
+</code></pre>
+
+<ul>
+<li><strong>Step 8: Add a new repository on github.com</strong></li>
+</ul>
+
+
+<p>Because github only support jelly plugins and custom plugin like <code>include_array</code> (under plugins) not be supported, so I decide push static file to repository, other than source code.</p>
+
+<p>goto <a href="http://github.com">github.com</a>, and create a new repository, named <code>your github's username</code>, and switch to local public forlder, and push all file to the repository.</p>
+
+<h6>open a console, and press:</h6>
+
+<pre><code>git init
+git remote add origin git@xxx.github.git
+git add .
+git commit -m init"
+</code></pre>
+
+<ul>
+<li><p><strong>Step 9: Push pages to github.com</strong></p>
+
+<p>  git push -u origin master</p></li>
+<li><p><strong>Step 10: Enjoy it.</strong></p></li>
+</ul>
+
+
+<p>open your favriate browser and open <code>page.domainname.com</code>.</p>
+]]></content>
+  </entry>
+  
+</feed>
